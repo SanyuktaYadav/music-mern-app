@@ -1,15 +1,24 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter, Route, Routes } from "react-router";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
+import ManageSongs from "./pages/ManageSongs";
+import AddSong from "./pages/AddSong";
+import Song from "./pages/Song";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        Music MERN APP
-      </div>
+      Music MERN APP
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/SignUp" element={<SignUp />} />
+          <Route path="/AddSong" element={<AddSong />} />
+          <Route path="/ManageSongs" element={<ManageSongs />} />
+          <Route path="/Song" element={<Song />} />
+        </Routes>
+      </BrowserRouter>,
     </>
   )
 }
