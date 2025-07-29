@@ -10,6 +10,9 @@ function App() {
   return (
     <>
       Music MERN APP
+      <h1 class="font-bold underline">
+        Hello world!
+      </h1>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
