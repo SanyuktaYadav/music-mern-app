@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import flowerImg from "../assets/flower-1.jpg";
+import flowerImg from "../assets/images/flower-1.jpg";
 import SongCard from "../components/SongCard";
 
 const SongsList = () => {
