@@ -9,7 +9,7 @@ const ConfirmationModal = ({ open, handleCloseModal, data }) => {
     }
 
     return (
-        < div className="fixed inset-0 bg-opacity-50 flex justify-center items-center" >
+        <div className="fixed inset-0 flex justify-center items-center">
             <div className="bg-white p-6 rounded-lg shadow-lg border-2 border-gray-400">
                 <h2 className="text-xl font-semibold text-gray-800">
                     Are you sure you want to delete selected item?
