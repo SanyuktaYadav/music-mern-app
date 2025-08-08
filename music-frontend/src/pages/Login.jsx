@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const initialFormFields = {
   email: "",
@@ -63,22 +63,16 @@ const Login = () => {
           />
         </div>
 
-        <div className="flex justify-between items-center">
-          <button
-            type="button"
-            onClick={() => navigate("/")}
-            className="text-red-600 hover:underline text-sm"
-          >
-            Cancel
-          </button>
+        <div className="text-center pt-4">
           <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded"
+            className="w-25 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded"
           >
             Login
           </button>
         </div>
       </form>
+      <div className="text-center pt-8">New user? Please sign up <Link to="/SignUp" className="text-blue-700">here</Link></div>
     </div>
   );
 };
