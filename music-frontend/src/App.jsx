@@ -12,12 +12,13 @@ function App() {
   return (
     <div className="bg-slate-300 min-h-screen">
       <BrowserRouter>
-      <NavBar />
+        <NavBar />
         <Routes>
           <Route path="/" element={<SongsList />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/AddSong" element={<AddSong />} />
+          <Route path="/EditSong/:id" element={<AddSong />} />
           <Route path="/Song" element={<Song />} />
         </Routes>
       </BrowserRouter>,
