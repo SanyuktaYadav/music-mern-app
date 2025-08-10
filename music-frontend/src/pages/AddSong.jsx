@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useState } from "react";
+import { Navigate, useNavigate, useParams } from "react-router";
 
 const initialFormFields = {
     songName: "",
@@ -12,6 +12,8 @@ const AddSong = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const isEdit = !!id;
+    const isLoggedIn = true;
+    const isAdmin = true;
 
     const [formFields, setFormFields] = useState({
         ...initialFormFields
@@ -31,6 +33,10 @@ const AddSong = () => {
     const handleSubmit = (e) => {
         const payload = formFields;
         console.log("submitting form with payload = ", payload);
+    }
+
+    if (!isAdmin || !isLoggedIn) {
+        return <Navigate to="/" />
     }
 
     return (

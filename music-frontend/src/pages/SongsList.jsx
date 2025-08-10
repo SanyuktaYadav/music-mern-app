@@ -11,7 +11,7 @@ import PreviewSongs from '../components/PreviewSongs';
 const SongsList = () => {
     const arr = new Array(20).fill(0);
     const navigate = useNavigate();
-    const showAdminActions = true;
+    const isAdmin = true;
     const isLoggedIn = true;
 
     const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
@@ -59,7 +59,7 @@ const SongsList = () => {
                                 image={flowerImg}
                                 small
                             />
-                            {showAdminActions &&
+                            {isAdmin &&
                                 <div className="text-lg mt-2 mr-2 self-start">
                                     <FontAwesomeIcon icon={faPen}
                                         onClick={(e) => handleEditSong(e)}
