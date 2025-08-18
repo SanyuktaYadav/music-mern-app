@@ -1,7 +1,15 @@
 const express = require("express");
 const songRouter = express.Router();
 const { Song } = require("../models/song.js");
-const { userAuth } = require("../middleware/auth.js")
+const { userAuth } = require("../middleware/auth.js");
+const multer = require("multer");
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+const songFilesUpload = upload.fields([
+    { name: "songPoster", maxCount: 1 }
+])
 
 songRouter.get("/myMusic/song/all", userAuth, async (req, res) => {
     try {
@@ -13,14 +21,16 @@ songRouter.get("/myMusic/song/all", userAuth, async (req, res) => {
     }
 });
 
-songRouter.post("/myMusic/song/add", async (req, res) => {
+songRouter.post("/myMusic/song/add", userAuth, songFilesUpload, async (req, res) => {
+    const files = req.files;
+    const songPoster = files?.songPoster?.[0]?.buffer.toString('base64') || null;
     const { songName, albumName } = req.body;
     try {
         const isSongPresent = await Song.findOne({ songName });
         if (isSongPresent) {
             res.status(400).send({ message: "Song with same name already present", songName });
         }
-        const newSong = new Song({ songName, albumName });
+        const newSong = new Song({ songName, albumName, songPoster });
         await newSong.save();
         res.status(200).send({ message: "Song added successfully", songName, albumName });
     } catch (err) {

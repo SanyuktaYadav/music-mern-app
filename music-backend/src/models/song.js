@@ -9,6 +9,10 @@ const songSchema = new mongoose.Schema({
     albumName: {
         type: String,
         required: true
+    },
+    songPoster: {
+        type: String,
+        required: true,
     }
 });
 
