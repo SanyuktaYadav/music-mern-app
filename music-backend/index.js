@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const dotenv = require('dotenv');
 const cookieParser = require("cookie-parser");
+const cors = require('cors');
 const { connectDatabase } = require("./database.js");
 const { authRouter } = require("./src/routes/auth.js");
 const { songRouter } = require("./src/routes/song.js");
@@ -11,9 +12,10 @@ const PORT = process.env.PORT || 3000;
 dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({ origin: true, credentials: true }));
 
 app.use("/", authRouter);
-app.use("/", songRouter);``
+app.use("/", songRouter);
 
 app.get("/myMusic/test", (req, res) => {
   res.status(200).send({ message: "hello" });
