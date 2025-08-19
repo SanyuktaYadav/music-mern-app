@@ -1,15 +1,40 @@
 const express = require("express");
+const dotenv = require('dotenv');
 const songRouter = express.Router();
 const { Song } = require("../models/song.js");
 const { userAuth } = require("../middleware/auth.js");
 const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
 
-const storage = multer.memoryStorage();
+dotenv.config();
+const ClOUDINARY_CLOUD_NAME = process.env.ClOUDINARY_CLOUD_NAME;
+const ClOUDINARY_API_KEY = process.env.ClOUDINARY_API_KEY;
+const ClOUDINARY_API_SECRET = process.env.ClOUDINARY_API_SECRET;
+
+cloudinary.config({
+    cloud_name: ClOUDINARY_CLOUD_NAME,
+    api_key: ClOUDINARY_API_KEY,
+    api_secret: ClOUDINARY_API_SECRET,
+});
+
+// const storage = multer.memoryStorage();
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/uploads')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, file.fieldname + '-' + uniqueSuffix + file.originalname)
+    }
+});
+
 const upload = multer({ storage });
 
 const songFilesUpload = upload.fields([
-    { name: "songPoster", maxCount: 1 }
-])
+    { name: "songPoster", maxCount: 1 },
+    { name: "songAudioFile", maxCount: 1 }
+]);
 
 songRouter.get("/myMusic/song/all", userAuth, async (req, res) => {
     try {
@@ -22,15 +47,42 @@ songRouter.get("/myMusic/song/all", userAuth, async (req, res) => {
 });
 
 songRouter.post("/myMusic/song/add", userAuth, songFilesUpload, async (req, res) => {
-    const files = req.files;
-    const songPoster = files?.songPoster?.[0]?.buffer.toString('base64') || null;
-    const { songName, albumName } = req.body;
     try {
+        const files = req.files;
+        // const songPoster = files?.songPoster?.[0]?.buffer.toString('base64') || null;
+        const { songName, albumName } = req.body;
+
+        const audioFilePath = files.songAudioFile[0].path;
+        const posterFilePath = files.songPoster[0].path;
+
+        // console.log("audioFilePath = ", audioFilePath)
+        // console.log("posterFilePath = ", posterFilePath)
+
+        // Upload audio to Cloudinary (resource_type: 'raw' for MP3)
+        const audioUpload = await cloudinary.uploader.upload(audioFilePath, {
+            resource_type: "raw",
+            folder: "MUSIC_APP_FILES/audio"
+        });
+
+        // Upload poster to Cloudinary (default is image)
+        const posterUpload = await cloudinary.uploader.upload(posterFilePath, {
+            folder: "MUSIC_APP_FILES/posters"
+        });
+
+        // console.log("audioUpload = ", audioUpload);
+        // console.log("posterUpload = ", posterUpload);
+
+
         const isSongPresent = await Song.findOne({ songName });
         if (isSongPresent) {
             res.status(400).send({ message: "Song with same name already present", songName });
         }
-        const newSong = new Song({ songName, albumName, songPoster });
+        const newSong = new Song({
+            songName,
+            albumName,
+            songPoster: posterUpload.secure_url,
+            songAudioFile: audioUpload.secure_url
+        });
         await newSong.save();
         res.status(200).send({ message: "Song added successfully", songName, albumName });
     } catch (err) {

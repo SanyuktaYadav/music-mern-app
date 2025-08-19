@@ -13,6 +13,10 @@ const songSchema = new mongoose.Schema({
     songPoster: {
         type: String,
         required: true,
+    },
+    songAudioFile: {
+        type: String,
+        required: true,
     }
 });
 
