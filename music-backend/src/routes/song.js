@@ -46,9 +46,9 @@ songRouter.get("/myMusic/song/all", userAuth, async (req, res) => {
     }
 });
 
-songRouter.get("/myMusic/song/getById", userAuth, async (req, res) => {
+songRouter.get("/myMusic/song/getById/:songId", userAuth, async (req, res) => {
     try {
-        const { songId } = req.body;
+        const { songId } = req.params;
         const song = await Song.findById(songId);
         res.status(200).send({ message: "Song fetched successfully", song });
     } catch (err) {
