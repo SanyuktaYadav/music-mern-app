@@ -46,6 +46,17 @@ songRouter.get("/myMusic/song/all", userAuth, async (req, res) => {
     }
 });
 
+songRouter.get("/myMusic/song/getById", userAuth, async (req, res) => {
+    try {
+        const { songId } = req.body;
+        const song = await Song.findById(songId);
+        res.status(200).send({ message: "Song fetched successfully", song });
+    } catch (err) {
+        console.log("ERROR: ", err);
+        res.status(400).send({ ERROR: "Some error has occured" });
+    }
+});
+
 songRouter.post("/myMusic/song/add", userAuth, songFilesUpload, async (req, res) => {
     try {
         const files = req.files;
