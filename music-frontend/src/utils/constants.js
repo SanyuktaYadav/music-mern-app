@@ -1,0 +1,1 @@
+export const BASE_URL = "https://fluffy-space-cod-pwgxwq5gq4vc7w7p-3000.app.github.dev";

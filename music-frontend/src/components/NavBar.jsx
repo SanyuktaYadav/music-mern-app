@@ -1,5 +1,8 @@
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { BASE_URL } from "../utils/constants";
+import { toast } from "react-toastify";
 
 const NavBar = () => {
     const navigate = useNavigate();
@@ -50,9 +53,15 @@ const NavBar = () => {
                         <ul className="py-1 text-gray-700">
                             <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Profile</li>
                             <li
-                                onClick={() => {
-                                    navigate("/")
-                                    setIsOpen(false);
+                                onClick={async () => {
+                                    const response = await axios.post(BASE_URL + "/myMusic/auth/logout", {}, { withCredentials: true });
+                                    if (response.status === 200) {
+                                        toast.success(response.data.message);
+                                        navigate("/");
+                                        setIsOpen(false);
+                                    } else {
+                                        toast.error(response.data?.message || "Something went wrong");
+                                    }
                                 }}
                                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                             >
