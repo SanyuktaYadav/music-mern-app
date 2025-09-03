@@ -49,7 +49,6 @@ const SongsList = () => {
 
     return (
         <div>
-            <h1>Welcome, {currentUser?.name}</h1>
             {openConfirmationModal &&
                 <ConfirmationModal
                     open={openConfirmationModal}
@@ -57,6 +56,7 @@ const SongsList = () => {
                     data={selectedSong} />
             }
 
+            <h1>Welcome, {currentUser?.name}</h1>
             <div className="flex justify-center w-full my-8" >
                 <div className="text-4xl text-slate-700 font-semibold">
                     Explore Songs

@@ -14,9 +14,9 @@ import { PersistGate } from 'redux-persist/integration/react';
 function App() {
   return (
     <>
-      <div className="bg-slate-300 min-h-screen">
-        <PersistGate loading={null} persistor={persistor}>
-          <Provider store={store}>
+      <div className="bg-slate-300 min-h-screen overflow-hidden">
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
             <BrowserRouter>
               <NavBar />
               <Routes>
@@ -55,10 +55,10 @@ function App() {
                   } />
               </Routes>
             </BrowserRouter>
-          </Provider>
-        </PersistGate>
+          </PersistGate>
+        </Provider>
       </div>
-      <ToastContainer style={{ ['--toastify-color-progress']: 'blue' }} />
+      <ToastContainer />
     </>
   )
 }
