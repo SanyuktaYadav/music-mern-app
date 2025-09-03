@@ -62,7 +62,7 @@ const NavBar = () => {
                                         if (response.status === 200) {
                                             toast.success(response.data.message);
                                             navigate("/Login");
-                                            dispatch(storeCurrentUserDetails(null));
+                                            dispatch(storeCurrentUserDetails({ user: null }));
                                             setIsOpen(false);
                                         }
                                     } catch (err) {

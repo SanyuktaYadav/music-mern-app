@@ -33,7 +33,7 @@ const Login = () => {
         { withCredentials: true });
       if (response.status === 200) {
         toast.success(response.data.message);
-        dispatch(storeCurrentUserDetails(response.data.user));
+        dispatch(storeCurrentUserDetails({ user: response.data.user }));
         navigate("/");
       }
     } catch (err) {
@@ -81,7 +81,7 @@ const Login = () => {
         <div className="text-center pt-4">
           <button
             type="submit"
-            className="w-25 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded"
+            className="cursor-pointer w-25 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded"
           >
             Login
           </button>
