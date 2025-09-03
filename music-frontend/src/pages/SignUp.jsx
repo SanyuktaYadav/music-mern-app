@@ -1,13 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import { storeCurrentUserDetails } from "../redux/slices/currentUserDetailsSlice";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
 
 const initialFormFields = {
+  name: "",
   email: "",
-  password: ""
+  password: "",
+  confirmPassword: ""
 };
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [formFields, setFormFields] = useState({ ...initialFormFields });
 
@@ -19,11 +27,26 @@ const SignUp = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = formFields;
-    console.log("Logging in with: ", payload);
-    navigate("/dashboard");
+    try {
+      if (formFields.password !== formFields.confirmPassword) {
+        toast.error("Passwords do not match");
+        return;
+      }
+
+      const payload = formFields;
+      delete payload.confirmPassword;
+      const response = await axios.post(BASE_URL + '/myMusic/auth/register', { ...payload },
+        { withCredentials: true });
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        dispatch(storeCurrentUserDetails({ user: response.data.user }));
+        navigate("/");
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.ERROR || "Something went wrong");
+    }
   };
 
   return (
@@ -31,6 +54,21 @@ const SignUp = () => {
       <h1 className="text-3xl font-semibold mb-6 text-center">Sign Up</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label htmlFor="name" className="block text-gray-900 font-medium mb-2">
+            Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            id="name"
+            name="name"
+            required
+            placeholder="Enter your name"
+            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={formFields.name}
+            onChange={handleChange}
+          />
+        </div>
+
         <div>
           <label htmlFor="email" className="block text-gray-900 font-medium mb-2">
             Email <span className="text-red-500">*</span>
@@ -59,6 +97,22 @@ const SignUp = () => {
             placeholder="Enter your password"
             className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={formFields.password}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="password" className="block text-gray-900 font-medium mb-2">
+            Confirm Password <span className="text-red-500">*</span>
+          </label>
+          <input
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            required
+            placeholder="Re Enter your password"
+            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={formFields.confirmPassword}
             onChange={handleChange}
           />
         </div>
