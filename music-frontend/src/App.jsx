@@ -23,15 +23,11 @@ function App() {
                 {/* Public Routes */}
                 <Route path="/Login" element={<Login />} />
                 <Route path="/SignUp" element={<SignUp />} />
+                <Route path="/" element={<SongsList />} /> {/* add restriction inside for if not loggedin */}
+                <Route path="/Song/:id" element={<Song />} />  {/* add restriction inside if not loggedin */}
 
                 {/* Protected Routes */}
-                <Route
-                  path="/"
-                  element={
-                    <ProtectedRoute>
-                      <SongsList />
-                    </ProtectedRoute>
-                  } />
+
                 <Route
                   path="/AddSong"
                   element={
@@ -46,13 +42,7 @@ function App() {
                       <AddSong />
                     </ProtectedRoute>}
                 />
-                <Route
-                  path="/Song/:id"
-                  element={
-                    <ProtectedRoute>
-                      <Song />
-                    </ProtectedRoute>
-                  } />
+
               </Routes>
             </BrowserRouter>
           </PersistGate>

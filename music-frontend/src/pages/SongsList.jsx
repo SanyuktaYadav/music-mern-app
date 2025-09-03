@@ -26,14 +26,16 @@ const SongsList = () => {
     useEffect(() => {
         const fetchSongs = async () => {
             try {
-                const response = await axios.get(BASE_URL + '/myMusic/song/all', { withCredentials: true });
-                dispatch(storeSongList(response?.data?.songs ?? []));
+                if (isLoggedIn) {
+                    const response = await axios.get(BASE_URL + '/myMusic/song/all', { withCredentials: true });
+                    dispatch(storeSongList(response?.data?.songs ?? []));
+                }
             } catch (err) {
                 toast.error(err.response?.data?.ERROR || "Something went wrong");
             }
         }
         fetchSongs();
-    }, [])
+    }, [isLoggedIn]);
 
     const handleOpenConfirmationModal = (e, songData) => {
         e.stopPropagation();
