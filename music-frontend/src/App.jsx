@@ -7,53 +7,56 @@ import NavBar from "./components/NavBar"
 import SongsList from "./pages/SongsList";
 import { ToastContainer } from 'react-toastify';
 import { Provider } from "react-redux";
-import { store } from "./redux/store.js"
+import { store, persistor } from "./redux/store.js"
 import ProtectedRoute from "./components/ProtectedRoute.jsx"
+import { PersistGate } from 'redux-persist/integration/react';
 
 function App() {
   return (
     <>
       <div className="bg-slate-300 min-h-screen">
-        <Provider store={store}>
-          <BrowserRouter>
-            <NavBar />
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/Login" element={<Login />} />
-              <Route path="/SignUp" element={<SignUp />} />
+        <PersistGate loading={null} persistor={persistor}>
+          <Provider store={store}>
+            <BrowserRouter>
+              <NavBar />
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/Login" element={<Login />} />
+                <Route path="/SignUp" element={<SignUp />} />
 
-              {/* Protected Routes */}
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <SongsList />
-                  </ProtectedRoute>
-                } />
-              <Route
-                path="/AddSong"
-                element={
-                  <ProtectedRoute>
-                    <AddSong />
-                  </ProtectedRoute>
-                } />
-              <Route
-                path="/EditSong/:id"
-                element={
-                  <ProtectedRoute>
-                    <AddSong />
-                  </ProtectedRoute>}
-              />
-              <Route
-                path="/Song/:id"
-                element={
-                  <ProtectedRoute>
-                    <Song />
-                  </ProtectedRoute>
-                } />
-            </Routes>
-          </BrowserRouter>
-        </Provider>
+                {/* Protected Routes */}
+                <Route
+                  path="/"
+                  element={
+                    <ProtectedRoute>
+                      <SongsList />
+                    </ProtectedRoute>
+                  } />
+                <Route
+                  path="/AddSong"
+                  element={
+                    <ProtectedRoute>
+                      <AddSong />
+                    </ProtectedRoute>
+                  } />
+                <Route
+                  path="/EditSong/:id"
+                  element={
+                    <ProtectedRoute>
+                      <AddSong />
+                    </ProtectedRoute>}
+                />
+                <Route
+                  path="/Song/:id"
+                  element={
+                    <ProtectedRoute>
+                      <Song />
+                    </ProtectedRoute>
+                  } />
+              </Routes>
+            </BrowserRouter>
+          </Provider>
+        </PersistGate>
       </div>
       <ToastContainer style={{ ['--toastify-color-progress']: 'blue' }} />
     </>
