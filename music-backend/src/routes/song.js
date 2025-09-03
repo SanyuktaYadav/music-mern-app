@@ -112,7 +112,7 @@ songRouter.post("/myMusic/song/add", userAuth, songFilesUpload, async (req, res)
     }
 });
 
-songRouter.delete("/myMusic/song/delete", async (req, res) => {
+songRouter.delete("/myMusic/song/delete", userAuth, async (req, res) => {
     const { songName } = req.body;
     try {
         const isSongPresent = await Song.findOne({ songName });
