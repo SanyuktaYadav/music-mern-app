@@ -29,7 +29,7 @@ const NavBar = () => {
     }, []);
 
     return (
-        <nav className="flex bg-slate-800 justify-between">
+        <nav className="fixed top-0 left-0 w-full flex bg-slate-800 justify-between z-50">
             <div className="flex gap-2 p-4 items-center">
                 <Link to="/" className="flex items-center space-x-3 text-gray-300 hover:text-white">
                     <div className="bg-gray-400 text-black rounded-xl flex items-center justify-center text-xl font-bold">
