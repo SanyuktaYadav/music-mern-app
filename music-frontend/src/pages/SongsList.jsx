@@ -2,21 +2,23 @@ import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from 'axios';
 import { useEffect, useState } from "react";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router";
 import { toast } from 'react-toastify';
 import ConfirmationModal from "../components/ConfirmationModal";
 import PreviewSongs from '../components/PreviewSongs';
 import SongCard from "../components/SongCard";
 import { BASE_URL } from '../utils/constants.js';
+import { storeSongList } from '../redux/slices/songListSlice.js';
 
 const SongsList = () => {
     const currentUser = useSelector(state => state.currentUser.user);
+    const songs = useSelector(state => state.songList.songs);
 
     const navigate = useNavigate();
-    const isAdmin = true;
-    const isLoggedIn = true;
-    const [songs, setSongs] = useState([]);
+    const dispatch = useDispatch();
+    const isLoggedIn = !!currentUser;
+    const isAdmin = currentUser?.type === "admin";
 
     const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
     const [selectedSong, setSelectedSong] = useState();
@@ -24,8 +26,8 @@ const SongsList = () => {
     useEffect(() => {
         const fetchSongs = async () => {
             try {
-                const response = await axios.get(BASE_URL + '/myMusic/song/all', { withCredentials: true })
-                setSongs(response?.data?.songs);
+                const response = await axios.get(BASE_URL + '/myMusic/song/all', { withCredentials: true });
+                dispatch(storeSongList(response?.data?.songs ?? []));
             } catch (err) {
                 toast.error(err.response?.data?.ERROR || "Something went wrong");
             }
