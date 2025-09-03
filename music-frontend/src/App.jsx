@@ -1,28 +1,62 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import SongsLists from "./pages/SongsList";
 import AddSong from "./pages/AddSong";
 import Song from "./pages/Song";
 import NavBar from "./components/NavBar"
 import SongsList from "./pages/SongsList";
+import { ToastContainer } from 'react-toastify';
+import { Provider } from "react-redux";
+import { store } from "./redux/store.js"
+import ProtectedRoute from "./components/ProtectedRoute.jsx"
 
 function App() {
   return (
-    <div className="bg-slate-300 min-h-screen">
-      <BrowserRouter>
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<SongsList />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/SignUp" element={<SignUp />} />
-          <Route path="/AddSong" element={<AddSong />} />
-          <Route path="/EditSong/:id" element={<AddSong />} />
-          <Route path="/Song" element={<Song />} />
-        </Routes>
-      </BrowserRouter>,
-    </div>
+    <>
+      <div className="bg-slate-300 min-h-screen">
+        <Provider store={store}>
+          <BrowserRouter>
+            <NavBar />
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/Login" element={<Login />} />
+              <Route path="/SignUp" element={<SignUp />} />
+
+              {/* Protected Routes */}
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <SongsList />
+                  </ProtectedRoute>
+                } />
+              <Route
+                path="/AddSong"
+                element={
+                  <ProtectedRoute>
+                    <AddSong />
+                  </ProtectedRoute>
+                } />
+              <Route
+                path="/EditSong/:id"
+                element={
+                  <ProtectedRoute>
+                    <AddSong />
+                  </ProtectedRoute>}
+              />
+              <Route
+                path="/Song/:id"
+                element={
+                  <ProtectedRoute>
+                    <Song />
+                  </ProtectedRoute>
+                } />
+            </Routes>
+          </BrowserRouter>
+        </Provider>
+      </div>
+      <ToastContainer style={{ ['--toastify-color-progress']: 'blue' }} />
+    </>
   )
 }
 
