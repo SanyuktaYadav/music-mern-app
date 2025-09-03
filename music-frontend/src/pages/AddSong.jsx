@@ -1,11 +1,11 @@
+import axios from "axios";
 import { useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router";
+import { BASE_URL } from "../utils/constants";
 
 const initialFormFields = {
     songName: "",
     albumName: "",
-    photo: "",
-    audioFile: ""
 }
 
 const AddSong = () => {
@@ -18,6 +18,8 @@ const AddSong = () => {
     const [formFields, setFormFields] = useState({
         ...initialFormFields
     });
+    const [songAudioFile, setSongAudioFile] = useState(null);
+    const [songPoster, setSongPoster] = useState(null);
 
     const handleInputChange = (e) => {
         setFormFields(prevValues => ({
@@ -26,13 +28,19 @@ const AddSong = () => {
         }));
     }
 
-    const handleFileChange = (e) => {
-        console.log("file e = ", e)
-    }
-
-    const handleSubmit = (e) => {
-        const payload = formFields;
-        console.log("submitting form with payload = ", payload);
+    const handleSubmit = async () => {
+        const formData = new FormData();
+        formData.append('songName', formFields.songName);
+        formData.append('albumName', formFields.albumName);
+        if (songPoster) formData.append('songPoster', songPoster);
+        if (songAudioFile) formData.append('songAudioFile', songAudioFile);
+        const response = await axios.post(BASE_URL + "/myMusic/song/add",
+            formData,
+            { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true }
+        );
+        if (response.status === 200) {
+            navigate("/");
+        }
     }
 
     if (!isAdmin || !isLoggedIn) {
@@ -84,7 +92,7 @@ const AddSong = () => {
                 </label>
                 <input
                     type="file"
-                    onChange={(e) => handleFileChange(e)}
+                    onChange={(e) => { setSongAudioFile(e.target.files[0]) }}
                     className="cursor-pointer rounded-md bg-white px-2 py-1 font-semibold text-gray-900 shadow-xs"
                 />
             </div>
@@ -93,7 +101,7 @@ const AddSong = () => {
                 <label className="font-medium text-gray-900 mr-4">Song Image</label>
                 <input
                     type="file"
-                    onChange={(e) => handleFileChange(e)}
+                    onChange={(e) => { setSongPoster(e.target.files[0]) }}
                     className="cursor-pointer rounded-md bg-white px-2 py-1 font-semibold text-gray-900 shadow-xs"
                 />
             </div>
