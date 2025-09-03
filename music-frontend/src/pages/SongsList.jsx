@@ -2,20 +2,34 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import flowerImg from "../assets/images/flower-1.jpg";
 import ConfirmationModal from "../components/ConfirmationModal";
 import SongCard from "../components/SongCard";
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import PreviewSongs from '../components/PreviewSongs';
+import { BASE_URL } from '../utils/constants.js'
+
+import axios from 'axios';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 const SongsList = () => {
-    const arr = new Array(20).fill(0);
+    const currentUser = useSelector(state => state.currentUser.user);
+
     const navigate = useNavigate();
     const isAdmin = true;
     const isLoggedIn = true;
+    const [songs, setSongs] = useState([]);
 
     const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
     const [selectedSong, setSelectedSong] = useState();
+
+    useEffect(() => {
+        const fetchSongs = async () => {
+            const response = await axios.get(BASE_URL + '/myMusic/song/all', { withCredentials: true })
+            setSongs(response?.data?.songs);
+        }
+        fetchSongs();
+    }, [])
 
     const handleOpenConfirmationModal = (e, songData) => {
         e.stopPropagation();
@@ -26,12 +40,14 @@ const SongsList = () => {
         setOpenConfirmationModal(false);
     }
 
-    const handleEditSong = (e) => {
+    const handleEditSong = (e, songId) => {
         e.stopPropagation();
-        navigate("/EditSong/1");
+        navigate("/EditSong/" + songId);
     }
+
     return (
         <div>
+            <h1>Welcome, {currentUser?.name}</h1>
             {openConfirmationModal &&
                 <ConfirmationModal
                     open={openConfirmationModal}
@@ -48,24 +64,25 @@ const SongsList = () => {
             {!isLoggedIn ?
                 <PreviewSongs /> :
                 <div className="flex flex-wrap mt-8 justify-center">
-                    {arr.map((item) => (
+                    {songs.map((item) => (
                         <div
+                            key={item._id}
                             className="w-[45%] mx-4 my-4 border-2 rounded-2xl border-slate-500 cursor-pointer bg-white flex justify-between"
-                            onClick={() => { navigate("/Song"); }}
+                            onClick={() => { navigate("/Song/" + item._id); }}
                         >
                             <SongCard
-                                title={"Zindagi Na Milegi Dobara"}
-                                from={"Zindagi Na Milegi Dobara"}
-                                image={flowerImg}
+                                title={item.songName}
+                                from={item.albumName}
+                                image={item.songPoster}
                                 small
                             />
                             {isAdmin &&
                                 <div className="text-lg mt-2 mr-2 self-start">
                                     <FontAwesomeIcon icon={faPen}
-                                        onClick={(e) => handleEditSong(e)}
+                                        onClick={(e) => handleEditSong(e, item._id)}
                                     />
                                     <FontAwesomeIcon icon={faTrash}
-                                        onClick={(e) => handleOpenConfirmationModal(e, { songName: "znmd", _id: "1" })}
+                                        onClick={(e) => handleOpenConfirmationModal(e, { songName: item.songName, _id: item._id })}
                                     />
                                 </div>
                             }
