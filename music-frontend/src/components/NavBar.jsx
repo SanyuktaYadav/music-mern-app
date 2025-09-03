@@ -42,7 +42,7 @@ const NavBar = () => {
             </div>
 
             <div ref={dropdownRef} className="relative inline-block text-left">
-                {!isLoggedIn && <Link to="/Login" className="p-4 text-gray-300 cursor-pointer">Log In</Link>}
+
                 {/* Trigger Button */}
                 <button
                     onClick={toggleDropdown}
@@ -55,8 +55,8 @@ const NavBar = () => {
                 {isOpen && (
                     <div className="absolute mt-2 right-0 w-40 bg-white border border-gray-300 rounded-md shadow-lg z-50">
                         <ul className="py-1 text-gray-700">
-                            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Profile</li>
-                            <li
+                            {!isLoggedIn && <li onClick={() => { navigate("/Login") }} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Login</li>}
+                            {isLoggedIn && <li
                                 onClick={async () => {
                                     try {
                                         const response = await axios.post(BASE_URL + "/myMusic/auth/logout", {}, { withCredentials: true });
@@ -74,6 +74,7 @@ const NavBar = () => {
                             >
                                 Logout
                             </li>
+                            }
                         </ul>
                     </div>
                 )}
