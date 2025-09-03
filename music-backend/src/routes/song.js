@@ -46,7 +46,17 @@ songRouter.get("/myMusic/song/all", userAuth, async (req, res) => {
     }
 });
 
-songRouter.get("/myMusic/song/getById/:songId", userAuth, async (req, res) => {
+songRouter.get("/myMusic/song/previewSongs", async (req, res) => {
+    try {
+        const songs = await Song.aggregate([{ $sample: { size: 4 } }]);
+        res.status(200).send({ message: "Songs fetched successfully", songs, totalCount: songs.length });
+    } catch (err) {
+        console.log("ERROR: ", err);
+        res.status(400).send({ ERROR: "Some error has occured" });
+    }
+});
+
+songRouter.get("/myMusic/song/getById/:songId", async (req, res) => {
     try {
         const { songId } = req.params;
         const song = await Song.findById(songId);
