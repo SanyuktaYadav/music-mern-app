@@ -3,16 +3,17 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constants";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { storeCurrentUserDetails } from "../redux/slices/currentUserDetailsSlice";
 
 const NavBar = () => {
     const navigate = useNavigate();
+    const currentUser = useSelector(state => state.currentUser.user);
     const dropdownRef = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
     const toggleDropdown = () => setIsOpen(!isOpen);
-    const isLoggedIn = true;
-    const isAdmin = false;
+    const isLoggedIn = !!currentUser;
+    const isAdmin = currentUser?.type === "admin";
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -37,7 +38,7 @@ const NavBar = () => {
                     </div>
                     <span className="text-white text-lg font-semibold">MyMusic</span>
                 </Link>
-                {isAdmin && <Link to="/AddSong" className="p-4 text-gray-300 cursor-pointer">Add Song</Link>}
+                {isAdmin && <Link to="/AddSong" className="px-4 text-gray-300 cursor-pointer">Add Song</Link>}
             </div>
 
             <div ref={dropdownRef} className="relative inline-block text-left">
