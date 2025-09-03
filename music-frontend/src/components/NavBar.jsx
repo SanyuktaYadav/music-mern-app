@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constants";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { storeCurrentUserDetails } from "../redux/slices/currentUserDetailsSlice";
 
 const NavBar = () => {
     const navigate = useNavigate();
@@ -11,6 +13,7 @@ const NavBar = () => {
     const toggleDropdown = () => setIsOpen(!isOpen);
     const isLoggedIn = true;
     const isAdmin = false;
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -54,13 +57,16 @@ const NavBar = () => {
                             <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Profile</li>
                             <li
                                 onClick={async () => {
-                                    const response = await axios.post(BASE_URL + "/myMusic/auth/logout", {}, { withCredentials: true });
-                                    if (response.status === 200) {
-                                        toast.success(response.data.message);
-                                        navigate("/");
-                                        setIsOpen(false);
-                                    } else {
-                                        toast.error(response.data?.message || "Something went wrong");
+                                    try {
+                                        const response = await axios.post(BASE_URL + "/myMusic/auth/logout", {}, { withCredentials: true });
+                                        if (response.status === 200) {
+                                            toast.success(response.data.message);
+                                            navigate("/Login");
+                                            dispatch(storeCurrentUserDetails(null));
+                                            setIsOpen(false);
+                                        }
+                                    } catch (err) {
+                                        toast.error(err.response?.data?.ERROR || "Something went wrong");
                                     }
                                 }}
                                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"

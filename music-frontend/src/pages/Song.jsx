@@ -1,8 +1,8 @@
-import SongCard from "../components/SongCard";
-import { useParams } from "react-router";
-import { useEffect } from "react";
-import { useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import { toast } from "react-toastify";
+import SongCard from "../components/SongCard";
 import { BASE_URL } from "../utils/constants";
 
 const Song = () => {
@@ -11,11 +11,15 @@ const Song = () => {
 
     useEffect(() => {
         if (id) {
-            const fetchSong = async () => {
-                const response = await axios.get(BASE_URL + '/myMusic/song/getById/' + id, { withCredentials: true })
-                setSong(response?.data?.song);
+            try {
+                const fetchSong = async () => {
+                    const response = await axios.get(BASE_URL + '/myMusic/song/getById/' + id, { withCredentials: true })
+                    setSong(response?.data?.song);
+                }
+                fetchSong();
+            } catch (err) {
+                toast.error(err.response?.data?.ERROR || "Something went wrong");
             }
-            fetchSong();
         }
     }, [id]);
 

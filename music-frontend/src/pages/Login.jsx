@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router";
-import { BASE_URL } from "../utils/constants";
 import axios from "axios";
-import { toast } from 'react-toastify';
+import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router";
+import { toast } from 'react-toastify';
 import { storeCurrentUserDetails } from "../redux/slices/currentUserDetailsSlice";
+import { BASE_URL } from "../utils/constants";
 
 const initialFormFields = {
   email: "",
@@ -27,14 +27,17 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = formFields;
-    const response = await axios.post(BASE_URL + '/myMusic/auth/login', { ...payload },
-      { withCredentials: true });
-    if (response.status === 200) {
-      console.log("response.data = ", response.data);
-      toast(response.data.message);
-      dispatch(storeCurrentUserDetails(response.data.user));
-      navigate("/");
+    try {
+      const payload = formFields;
+      const response = await axios.post(BASE_URL + '/myMusic/auth/login', { ...payload },
+        { withCredentials: true });
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        dispatch(storeCurrentUserDetails(response.data.user));
+        navigate("/");
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.ERROR || "Something went wrong");
     }
   };
 

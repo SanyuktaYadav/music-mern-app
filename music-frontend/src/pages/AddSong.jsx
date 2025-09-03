@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router";
+import { toast } from "react-toastify";
 import { BASE_URL } from "../utils/constants";
 
 const initialFormFields = {
@@ -29,17 +30,21 @@ const AddSong = () => {
     }
 
     const handleSubmit = async () => {
-        const formData = new FormData();
-        formData.append('songName', formFields.songName);
-        formData.append('albumName', formFields.albumName);
-        if (songPoster) formData.append('songPoster', songPoster);
-        if (songAudioFile) formData.append('songAudioFile', songAudioFile);
-        const response = await axios.post(BASE_URL + "/myMusic/song/add",
-            formData,
-            { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true }
-        );
-        if (response.status === 200) {
-            navigate("/");
+        try {
+            const formData = new FormData();
+            formData.append('songName', formFields.songName);
+            formData.append('albumName', formFields.albumName);
+            if (songPoster) formData.append('songPoster', songPoster);
+            if (songAudioFile) formData.append('songAudioFile', songAudioFile);
+            const response = await axios.post(BASE_URL + "/myMusic/song/add",
+                formData,
+                { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true }
+            );
+            if (response.status === 200) {
+                navigate("/");
+            }
+        } catch (err) {
+            toast.error(err.response?.data?.ERROR || "Something went wrong");
         }
     }
 

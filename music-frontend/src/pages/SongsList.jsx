@@ -1,16 +1,14 @@
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import { useNavigate } from "react-router";
-import ConfirmationModal from "../components/ConfirmationModal";
-import SongCard from "../components/SongCard";
-import { faPen } from '@fortawesome/free-solid-svg-icons';
-import PreviewSongs from '../components/PreviewSongs';
-import { BASE_URL } from '../utils/constants.js'
-
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
+import { useNavigate } from "react-router";
+import { toast } from 'react-toastify';
+import ConfirmationModal from "../components/ConfirmationModal";
+import PreviewSongs from '../components/PreviewSongs';
+import SongCard from "../components/SongCard";
+import { BASE_URL } from '../utils/constants.js';
 
 const SongsList = () => {
     const currentUser = useSelector(state => state.currentUser.user);
@@ -25,8 +23,12 @@ const SongsList = () => {
 
     useEffect(() => {
         const fetchSongs = async () => {
-            const response = await axios.get(BASE_URL + '/myMusic/song/all', { withCredentials: true })
-            setSongs(response?.data?.songs);
+            try {
+                const response = await axios.get(BASE_URL + '/myMusic/song/all', { withCredentials: true })
+                setSongs(response?.data?.songs);
+            } catch (err) {
+                toast.error(err.response?.data?.ERROR || "Something went wrong");
+            }
         }
         fetchSongs();
     }, [])
