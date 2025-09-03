@@ -38,7 +38,7 @@ authRouter.post("/myMusic/auth/login", async (req, res) => {
         res.cookie("token", token, {
             expires: new Date(Date.now() + 8 * 3600000),
         })
-        res.status(200).send({ message: "Logged in successfully", name: user.name, email: user.email });
+        res.status(200).send({ message: "Logged in successfully", user: { name: user.name, email: user.email, _id: user._id } });
     } catch (err) {
         console.log("ERROR: ", err);
         res.status(400).send({ ERROR: "Some error has occured, Fill all required and valid data" });
