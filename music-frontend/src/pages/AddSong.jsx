@@ -89,15 +89,15 @@ const AddSong = () => {
     }
 
     return (
-        <>
-            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 p-10">
-                <div className="sm:col-span-4">
-                    <h1 className="text-3xl font-semibold">{isEdit ? "Edit Song" : "Add Song"}</h1>
+        <div className="max-w-5xl mx-auto">
+            <div className='my-18 w-full flex flex-col justify-center items-center gap-8'>
+                <div className="text-4xl text-slate-700 font-semibold">
+                    {isEdit ? "Edit Song" : "Add Song"}
                 </div>
-                <div className="sm:col-span-4">
+                <div className="flex items-center w-full max-w-3xl">
                     <label
                         for="songName"
-                        className=" font-medium text-gray-900 mr-4">
+                        className="w-40 font-medium text-gray-900 mx-4">
                         Song Name <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -105,16 +105,16 @@ const AddSong = () => {
                         name="songName"
                         type="text"
                         placeholder="Enter a Song Name"
-                        className="min-w-0 py-2 px-2 text-gray-900 bg-white w-[60%] rounded"
+                        className="min-w-0 py-2 px-2 text-gray-900 bg-white flex-1 rounded mx-4"
                         value={formFields.songName}
                         onChange={(e) => handleInputChange(e)}
                     />
                 </div>
 
-                <div className="sm:col-span-4">
+                <div className="flex items-center w-full max-w-3xl">
                     <label
                         for="albumName"
-                        className=" font-medium text-gray-900 mr-4">
+                        className="w-40 font-medium text-gray-900 mx-4">
                         Album Name <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -122,20 +122,21 @@ const AddSong = () => {
                         name="albumName"
                         type="text"
                         placeholder="Enter an Album Name"
-                        className="min-w-0 py-2 px-2 text-gray-900 bg-white w-[60%] rounded"
+                        className="min-w-0 py-2 px-2 text-gray-900 bg-white flex-1 rounded mx-4"
                         value={formFields.albumName}
                         onChange={(e) => handleInputChange(e)}
                     />
                 </div>
 
-                <div className="sm:col-span-4">
-                    <label className="font-medium text-gray-900 mr-4">
+                <div className="flex items-center w-full max-w-3xl">
+                    <label for="audioFile" className="w-40 font-medium text-gray-900 mx-4">
                         Audio file
                     </label>
                     <input
                         type="file"
+                        id="audioFile"
                         onChange={(e) => { setSongAudioFile(e.target.files[0]) }}
-                        className="cursor-pointer rounded-md bg-white px-2 py-1 font-semibold text-gray-900 shadow-xs"
+                        className="min-w-0 py-2 px-2 text-gray-900 bg-white flex-1 rounded mx-4"
                     />
                     {existingLinks?.songAudioLink && <a
                         href={existingLinks?.songAudioLink}
@@ -147,12 +148,13 @@ const AddSong = () => {
                     </a>}
                 </div>
 
-                <div className="sm:col-span-4">
-                    <label className="font-medium text-gray-900 mr-4">Song Image</label>
+                <div className="flex items-center w-full max-w-3xl">
+                    <label for="poster" className="w-40 font-medium text-gray-900 mx-4">Song Image</label>
                     <input
                         type="file"
+                        id="poster"
                         onChange={(e) => { setSongPoster(e.target.files[0]) }}
-                        className="cursor-pointer rounded-md bg-white px-2 py-1 font-semibold text-gray-900 shadow-xs"
+                        className="min-w-0 py-2 px-2 text-gray-900 bg-white flex-1 rounded mx-4"
                     />
                     {existingLinks?.songPosterLink && <a
                         href={existingLinks?.songPosterLink}
@@ -164,7 +166,7 @@ const AddSong = () => {
                     </a>}
                 </div>
 
-                <div className="sm:col-span-4">
+                <div className="flex justify-end w-full max-w-3xl">
                     <button
                         onClick={() => navigate("/")}
                         className="cursor-pointer rounded-md bg-red-600 px-2 py-1 mx-1 text-xl font-semibold text-white shadow-xs">
@@ -172,13 +174,13 @@ const AddSong = () => {
                     </button>
                     <button
                         onClick={(e) => { handleSubmit(e) }}
-                        className="cursor-pointer rounded-md bg-white px-2 py-1 mx-1 text-xl font-semibold text-gray-900 shadow-xs">
+                        className="cursor-pointer rounded-md bg-white px-2 py-1 mx-1 text-xl font-semibold text-gray-900 shadow-xs mx-4">
                         Save
                     </button>
                 </div>
             </div>
             {isUploading && <h1 className="m-8">Uploading...</h1>}
-        </>
+        </div>
     )
 }
 
