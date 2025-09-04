@@ -1,9 +1,7 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { toast } from "react-toastify";
 import SongCard from "../components/SongCard";
-import { BASE_URL } from "../utils/constants";
+import { fetchSongById } from "../actions/songActions";
 
 const Song = () => {
     const { id } = useParams();
@@ -11,15 +9,13 @@ const Song = () => {
 
     useEffect(() => {
         if (id) {
-            try {
-                const fetchSong = async () => {
-                    const response = await axios.get(BASE_URL + '/myMusic/song/getById/' + id, { withCredentials: true })
+            const fetchSong = async () => {
+                const response = await fetchSongById(id);
+                if (response) {
                     setSong(response?.data?.song);
                 }
-                fetchSong();
-            } catch (err) {
-                toast.error(err.response?.data?.ERROR || "Something went wrong");
             }
+            fetchSong();
         }
     }, [id]);
 

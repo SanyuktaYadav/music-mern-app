@@ -1,10 +1,8 @@
-import axios from "axios";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router";
-import { toast } from 'react-toastify';
 import { storeCurrentUserDetails } from "../redux/slices/currentUserDetailsSlice";
-import { BASE_URL } from "../utils/constants";
+import { login } from "../actions/userActions";
 
 const initialFormFields = {
   email: "",
@@ -27,17 +25,11 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const payload = formFields;
-      const response = await axios.post(BASE_URL + '/myMusic/auth/login', { ...payload },
-        { withCredentials: true });
-      if (response.status === 200) {
-        toast.success(response.data.message);
-        dispatch(storeCurrentUserDetails({ user: response.data.user }));
-        navigate("/");
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.ERROR || "Something went wrong");
+    const payload = formFields;
+    const response = await login(payload);
+    if (response.status === 200) {
+      dispatch(storeCurrentUserDetails({ user: response.data.user }));
+      navigate("/");
     }
   };
 

@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { storeCurrentUserDetails } from "../redux/slices/currentUserDetailsSlice";
-import { useDispatch } from "react-redux";
-import axios from "axios";
-import { BASE_URL } from "../utils/constants";
+import { register } from "../actions/userActions";
 
 const initialFormFields = {
   name: "",
@@ -15,7 +12,6 @@ const initialFormFields = {
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [formFields, setFormFields] = useState({ ...initialFormFields });
 
@@ -29,23 +25,17 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      if (formFields.password !== formFields.confirmPassword) {
-        toast.error("Passwords do not match");
-        return;
-      }
 
-      const payload = formFields;
-      delete payload.confirmPassword;
-      const response = await axios.post(BASE_URL + '/myMusic/auth/register', { ...payload },
-        { withCredentials: true });
-      if (response.status === 200) {
-        toast.success(response.data.message);
-        dispatch(storeCurrentUserDetails({ user: response.data.user }));
-        navigate("/");
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.ERROR || "Something went wrong");
+    if (formFields.password !== formFields.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    const payload = formFields;
+    delete payload.confirmPassword;
+    const response = await register(payload);
+    if (response) {
+      toast.success(response.data.message);
+      navigate("/Login");
     }
   };
 

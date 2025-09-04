@@ -1,9 +1,8 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router";
-import { toast } from "react-toastify";
-import { BASE_URL } from "../utils/constants";
 import { useSelector } from "react-redux";
+import { Navigate, useNavigate, useParams } from "react-router";
+import { addSong, fetchSongById } from "../actions/songActions";
+import { toast } from "react-toastify";
 
 const initialFormFields = {
     songName: "",
@@ -32,15 +31,13 @@ const AddSong = () => {
 
     useEffect(() => {
         if (id) {
-            try {
-                const fetchSong = async () => {
-                    const response = await axios.get(BASE_URL + '/myMusic/song/getById/' + id, { withCredentials: true })
+            const fetchSong = async () => {
+                const response = await fetchSongById(id);
+                if (response) {
                     setEditData(response?.data?.song);
                 }
-                fetchSong();
-            } catch (err) {
-                toast.error(err.response?.data?.ERROR || "Something went wrong");
             }
+            fetchSong();
         }
     }, [id]);
 
@@ -73,25 +70,18 @@ const AddSong = () => {
     }
 
     const handleSubmit = async () => {
-        try {
-            setIsUploading(true);
-            const formData = new FormData();
-            formData.append('songName', formFields.songName);
-            formData.append('albumName', formFields.albumName);
-            if (songPoster) formData.append('songPoster', songPoster);
-            if (songAudioFile) formData.append('songAudioFile', songAudioFile);
-            const response = await axios.post(BASE_URL + "/myMusic/song/add",
-                formData,
-                { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true }
-            );
-            if (response.status === 200) {
-                navigate("/");
-            }
-        } catch (err) {
-            toast.error(err.response?.data?.ERROR || "Something went wrong");
-        } finally {
-            setIsUploading(false);
+        setIsUploading(true);
+        const formData = new FormData();
+        formData.append('songName', formFields.songName);
+        formData.append('albumName', formFields.albumName);
+        if (songPoster) formData.append('songPoster', songPoster);
+        if (songAudioFile) formData.append('songAudioFile', songAudioFile);
+        const response = await addSong(formData);
+        if (response.status === 200) {
+            toast.success(response.data.message);
+            navigate("/");
         }
+        setIsUploading(false);
     }
 
     if (!isAdmin || !isLoggedIn) {

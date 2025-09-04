@@ -1,8 +1,7 @@
-import axios from "axios";
 import { toast } from "react-toastify";
-import { BASE_URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { storeSongList } from "../redux/slices/songListSlice";
+import { deleteSong, fetchAllSongs } from "../actions/songActions";
 
 const ConfirmationModal = ({ open, handleCloseModal, data }) => {
     const dispatch = useDispatch();
@@ -13,20 +12,15 @@ const ConfirmationModal = ({ open, handleCloseModal, data }) => {
 
     const handleConfirmDelete = async () => {
         try {
-            const response = await axios.delete(BASE_URL + '/myMusic/song/delete',
-                {
-                    data: {
-                        songName: data?.songName, // ✅ request body
-                    },
-                    withCredentials: true,
-                });
-
-            if (response.status === 200) {
-                toast.success(response.data.message);
-                const responseSong = await axios.get(BASE_URL + '/myMusic/song/all', { withCredentials: true });
-                dispatch(storeSongList(responseSong?.data?.songs ?? []));
+            const success = await deleteSong(data?.songName);
+            if (success) {
+                const response = await fetchAllSongs();
+                if (response) {
+                    toast.success(response.data.message);
+                    dispatch(storeSongList(response?.data?.songs ?? []));
+                    handleCloseModal();
+                }
             }
-            handleCloseModal();
         } catch (err) {
             toast.error(err.response?.data?.ERROR || "Something went wrong");
         }

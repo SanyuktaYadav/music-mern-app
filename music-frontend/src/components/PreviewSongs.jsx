@@ -1,9 +1,7 @@
 import { useNavigate } from "react-router";
 import SongCard from "./SongCard";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import axios from "axios";
-import { BASE_URL } from "../utils/constants";
+import { fetchPreviewSongs } from "../actions/songActions";
 
 const PreviewSongs = () => {
     const [previewSongs, setPreviewSongs] = useState([]);
@@ -11,15 +9,13 @@ const PreviewSongs = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchPreviewSongs = async () => {
-            try {
-                const response = await axios.get(BASE_URL + '/myMusic/song/previewSongs', { withCredentials: true });
+        const fetchData = async () => {
+            const response = await fetchPreviewSongs();
+            if (response) {
                 setPreviewSongs(response?.data?.songs);
-            } catch (err) {
-                toast.error(err.response?.data?.ERROR || "Something went wrong");
             }
         }
-        fetchPreviewSongs();
+        fetchData();
     }, []);
 
     return (

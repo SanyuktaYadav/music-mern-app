@@ -1,10 +1,8 @@
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { BASE_URL } from "../utils/constants";
-import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { storeCurrentUserDetails } from "../redux/slices/currentUserDetailsSlice";
+import { logout } from "../actions/userActions";
 
 const NavBar = () => {
     const navigate = useNavigate();
@@ -58,16 +56,11 @@ const NavBar = () => {
                             {!isLoggedIn && <li onClick={() => { navigate("/Login") }} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Login</li>}
                             {isLoggedIn && <li
                                 onClick={async () => {
-                                    try {
-                                        const response = await axios.post(BASE_URL + "/myMusic/auth/logout", {}, { withCredentials: true });
-                                        if (response.status === 200) {
-                                            toast.success(response.data.message);
-                                            navigate("/Login");
-                                            dispatch(storeCurrentUserDetails({ user: null }));
-                                            setIsOpen(false);
-                                        }
-                                    } catch (err) {
-                                        toast.error(err.response?.data?.ERROR || "Something went wrong");
+                                    const success = await logout();
+                                    if (success) {
+                                        dispatch(storeCurrentUserDetails({ user: null }));
+                                        navigate("/Login");
+                                        setIsOpen(false);
                                     }
                                 }}
                                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"

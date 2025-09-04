@@ -1,15 +1,13 @@
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from 'axios';
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router";
-import { toast } from 'react-toastify';
 import ConfirmationModal from "../components/ConfirmationModal";
 import PreviewSongs from '../components/PreviewSongs';
 import SongCard from "../components/SongCard";
-import { BASE_URL } from '../utils/constants.js';
 import { storeSongList } from '../redux/slices/songListSlice.js';
+import { fetchAllSongs } from '../actions/songActions.js';
 
 const SongsList = () => {
     const currentUser = useSelector(state => state.currentUser.user);
@@ -25,13 +23,9 @@ const SongsList = () => {
 
     useEffect(() => {
         const fetchSongs = async () => {
-            try {
-                if (isLoggedIn) {
-                    const response = await axios.get(BASE_URL + '/myMusic/song/all', { withCredentials: true });
-                    dispatch(storeSongList(response?.data?.songs ?? []));
-                }
-            } catch (err) {
-                toast.error(err.response?.data?.ERROR || "Something went wrong");
+            if (isLoggedIn) {
+                const response = await fetchAllSongs();
+                dispatch(storeSongList(response?.data?.songs ?? []));
             }
         }
         fetchSongs();
