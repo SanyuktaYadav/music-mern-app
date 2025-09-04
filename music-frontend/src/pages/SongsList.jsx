@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router";
 import ConfirmationModal from "../components/ConfirmationModal";
 import PreviewSongs from '../components/PreviewSongs';
-import SongCard from "../components/SongCard";
+import ListSongCard from "../components/ListSongCard.jsx";
 import { storeSongList } from '../redux/slices/songListSlice.js';
 import { fetchAllSongs } from '../actions/songActions.js';
 
@@ -46,7 +46,7 @@ const SongsList = () => {
     }
 
     return (
-        <div>
+        <div className='max-w-5xl mx-auto'>
             {openConfirmationModal &&
                 <ConfirmationModal
                     open={openConfirmationModal}
@@ -54,27 +54,30 @@ const SongsList = () => {
                     data={selectedSong} />
             }
 
-            <h1>Welcome, {currentUser?.name}</h1>
-            <div className="flex justify-center w-full my-8" >
-                <div className="text-4xl text-slate-700 font-semibold">
-                    Explore Songs
+            <div className='my-18 w-full' >
+                {isLoggedIn &&
+                    <h1 className='m-4'>Welcome, {currentUser?.name} {isAdmin && "(Admin)"}</h1>
+                }
+                <div className="flex justify-center" >
+                    <div className="text-4xl text-slate-700 font-semibold">
+                        Explore Songs
+                    </div>
                 </div>
             </div>
 
             {!isLoggedIn ?
                 <PreviewSongs /> :
-                <div className="flex flex-wrap mt-8 justify-center">
+                <div className="flex flex-wrap mt-8 justify-center w-full">
                     {songs.map((item) => (
                         <div
                             key={item._id}
-                            className="w-[45%] mx-4 my-4 border-2 rounded-2xl border-slate-500 cursor-pointer bg-white flex justify-between"
+                            className="mx-4 my-4 border-2 rounded-2xl border-slate-500 cursor-pointer bg-white flex justify-between border-2"
                             onClick={() => { navigate("/Song/" + item._id); }}
                         >
-                            <SongCard
+                            <ListSongCard
                                 title={item.songName}
                                 from={item.albumName}
                                 image={item.songPoster}
-                                small
                             />
                             {isAdmin &&
                                 <div className="text-lg mt-2 mr-2 self-start">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import SongCard from "../components/SongCard";
+import MainSongCard from "../components/MainSongCard";
 import { fetchSongById } from "../actions/songActions";
 
 const Song = () => {
@@ -23,7 +23,7 @@ const Song = () => {
         <div className="flex justify-center items-center w-full h-screen">
             {song &&
                 (
-                    <SongCard
+                    <MainSongCard
                         title={song.songName}
                         from={song.albumName}
                         image={song.songPoster}
