@@ -73,16 +73,18 @@ const UsersList = () => {
                 {users.map((item) => (
                     <div
                         key={item._id}
-                        className="w-[45%] mx-4 my-4 border-2 rounded-2xl border-slate-500 bg-white flex justify-between p-4"
+                        className="w-[45%] mx-4 my-4 border-2 rounded-2xl border-slate-500 bg-white flex justify-between p-4  flex-wrap"
                     // onClick={() => { }}
                     >
                         Name: {item.name} <br />
                         Email: {item.email} <br />
-                        <div>
+                        <div className="flex gap-2 flex-wrap mt-2">
                             {item.type === "admin" && (
-                                <b className="px-2">{item.type}</b>
+                                <b>Admin</b>
                             )}
-                            {currentUser._id === item._id && <b style={{color: "green"}}>You</b>}
+                            {currentUser._id === item._id && (
+                                <b className="px-2" style={{ color: "green" }}>You</b>
+                            )}
                         </div>
                     </div>
                 ))}
