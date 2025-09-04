@@ -38,7 +38,7 @@ const UsersList = () => {
 
     return (
         <div className="max-w-5xl mx-auto">
-            <div className='my-18 w-full' >
+            <div className='mt-18 mb-4 w-full' >
                 <div className="flex justify-center" >
                     <div className="text-4xl text-slate-700 font-semibold">
                         Users

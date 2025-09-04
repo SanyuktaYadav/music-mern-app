@@ -90,7 +90,7 @@ const AddSong = () => {
 
     return (
         <div className="max-w-5xl mx-auto">
-            <div className='my-18 w-full flex flex-col justify-center items-center gap-8'>
+            <div className='mt-18 mb-4 w-full flex flex-col justify-center items-center gap-8'>
                 <div className="text-4xl text-slate-700 font-semibold">
                     {isEdit ? "Edit Song" : "Add Song"}
                 </div>

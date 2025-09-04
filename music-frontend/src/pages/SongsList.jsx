@@ -54,7 +54,7 @@ const SongsList = () => {
                     data={selectedSong} />
             }
 
-            <div className='my-18 w-full' >
+            <div className='mt-18 mb-4 w-full' >
                 {isLoggedIn &&
                     <h1 className='m-4'>Welcome, {currentUser?.name} {isAdmin && "(Admin)"}</h1>
                 }
