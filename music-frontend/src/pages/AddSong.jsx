@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../utils/constants";
@@ -17,6 +17,7 @@ const AddSong = () => {
     const isEdit = !!id;
     const isLoggedIn = !!currentUser;
     const isAdmin = currentUser?.type === "admin";
+    const [editData, setEditData] = useState({});
 
     const [isUploading, setIsUploading] = useState(false);
 
@@ -25,6 +26,44 @@ const AddSong = () => {
     });
     const [songAudioFile, setSongAudioFile] = useState(null);
     const [songPoster, setSongPoster] = useState(null);
+    const [existingLinks, setExistingLinks] = useState([{
+        songPosterLink: "", songAudioLink: ""
+    }])
+
+    useEffect(() => {
+        if (id) {
+            try {
+                const fetchSong = async () => {
+                    const response = await axios.get(BASE_URL + '/myMusic/song/getById/' + id, { withCredentials: true })
+                    setEditData(response?.data?.song);
+                }
+                fetchSong();
+            } catch (err) {
+                toast.error(err.response?.data?.ERROR || "Something went wrong");
+            }
+        }
+    }, [id]);
+
+    useEffect(() => {
+        if (editData?._id) {
+            setFormFields(prevState => ({
+                ...prevState,
+                songName: editData.songName,
+                albumName: editData.albumName
+            }))
+            setExistingLinks(prevState => ({
+                ...prevState,
+                songPosterLink: editData.songPoster,
+                songAudioLink: editData.songAudioFile
+            }))
+        }
+    }, [editData?._id]);
+
+    useEffect(() => {
+        return () => {
+            setEditData("")
+        }
+    }, [])
 
     const handleInputChange = (e) => {
         setFormFields(prevValues => ({
@@ -108,6 +147,14 @@ const AddSong = () => {
                         onChange={(e) => { setSongAudioFile(e.target.files[0]) }}
                         className="cursor-pointer rounded-md bg-white px-2 py-1 font-semibold text-gray-900 shadow-xs"
                     />
+                    {existingLinks?.songAudioLink && <a
+                        href={existingLinks?.songAudioLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 m-4"
+                    >
+                        View Uploaded Audio
+                    </a>}
                 </div>
 
                 <div className="sm:col-span-4">
@@ -117,6 +164,14 @@ const AddSong = () => {
                         onChange={(e) => { setSongPoster(e.target.files[0]) }}
                         className="cursor-pointer rounded-md bg-white px-2 py-1 font-semibold text-gray-900 shadow-xs"
                     />
+                    {existingLinks?.songPosterLink && <a
+                        href={existingLinks?.songPosterLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 m-4"
+                    >
+                        View Uploaded Poster
+                    </a>}
                 </div>
 
                 <div className="sm:col-span-4">
