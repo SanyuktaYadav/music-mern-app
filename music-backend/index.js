@@ -6,6 +6,7 @@ const cors = require('cors');
 const { connectDatabase } = require("./database.js");
 const { authRouter } = require("./src/routes/auth.js");
 const { songRouter } = require("./src/routes/song.js");
+const { userRouter } = require("./src/routes/user.js");
 
 const PORT = process.env.PORT || 3000;
 
@@ -15,6 +16,7 @@ app.use(cookieParser());
 app.use(cors({ origin: true, credentials: true }));
 
 app.use("/", authRouter);
+app.use("/", userRouter);
 app.use("/", songRouter);
 
 app.get("/myMusic/test", (req, res) => {
