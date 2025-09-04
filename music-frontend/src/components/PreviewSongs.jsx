@@ -1,7 +1,7 @@
-import { Link, useNavigate } from "react-router";
-import SongCard from "./SongCard";
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router";
 import { fetchPreviewSongs } from "../actions/songActions";
+import ListSongCard from "./ListSongCard";
 
 const PreviewSongs = () => {
     const [previewSongs, setPreviewSongs] = useState([]);
@@ -20,17 +20,16 @@ const PreviewSongs = () => {
 
     return (
         <div>
-            <div className="flex flex-wrap justify-center border-b-2">
+            <div className="flex flex-wrap mt-8 justify-center w-full border-b-2">
                 {previewSongs.map((item) => (
                     <div
-                        className="w-[45%] mx-4 my-4 border-2 rounded-2xl border-slate-500 cursor-pointer bg-white flex justify-between"
+                        className="mx-4 my-4 border-2 rounded-2xl border-slate-500 cursor-pointer bg-white flex justify-between border-2"
                         onClick={() => { navigate("/Song/" + item._id); }}
                     >
-                        <SongCard
+                        <ListSongCard
                             title={item.songName}
                             from={item.albumName}
                             image={item.songPoster}
-                            small
                         />
                     </div>
                 ))}
@@ -43,8 +42,7 @@ const PreviewSongs = () => {
                 </div>
                 <div className="flex flex-wrap justify-center opacity-20">
                     {arr.slice(0, 4).map(() => (
-                        <div className="w-[45%] h-24 mx-4 my-4 border-2 rounded-2xl border-slate-500 cursor-pointer bg-gray-200 flex justify-between">
-                        </div>
+                        <div className="w-[34%] h-40 mx-4 my-4 border-2 rounded-2xl border-slate-500 cursor-pointer bg-gray-200 flex justify-between"></div>
                     ))}
                 </div>
             </div>
