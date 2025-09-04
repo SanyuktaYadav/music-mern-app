@@ -48,7 +48,7 @@ songRouter.get("/myMusic/song/all", userAuth, async (req, res) => {
 
 songRouter.get("/myMusic/song/previewSongs", async (req, res) => {
     try {
-        const songs = await Song.aggregate([{ $sample: { size: 4 } }]);
+        const songs = await Song.aggregate([{ $sample: { size: 2 } }]);
         res.status(200).send({ message: "Songs fetched successfully", songs, totalCount: songs.length });
     } catch (err) {
         console.log("ERROR: ", err);
