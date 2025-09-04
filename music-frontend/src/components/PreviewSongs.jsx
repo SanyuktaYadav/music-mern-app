@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import SongCard from "./SongCard";
 import { useEffect, useState } from "react";
 import { fetchPreviewSongs } from "../actions/songActions";
@@ -35,7 +35,7 @@ const PreviewSongs = () => {
                     </div>
                 ))}
             </div>
-            <div className='mt-8 mx-12 text-xl'>Login to listen more Songs</div>
+            <div className='mt-8 mx-12 text-xl'>Login <Link to="/Login" className="text-blue-600 underline">here</Link> to listen more songs</div>
 
             <div className="relative">
                 <div className="absolute inset-0 flex items-center justify-center z-10 text-4xl">
