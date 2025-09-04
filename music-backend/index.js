@@ -3,6 +3,8 @@ const app = express();
 const dotenv = require('dotenv');
 const cookieParser = require("cookie-parser");
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./swagger-output.json');
 const { connectDatabase } = require("./database.js");
 const { authRouter } = require("./src/routes/auth.js");
 const { songRouter } = require("./src/routes/song.js");
@@ -22,6 +24,9 @@ app.use("/", songRouter);
 app.get("/myMusic/test", (req, res) => {
   res.status(200).send({ message: "hello" });
 });
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
 
 app.listen(PORT, () => {
   (async () => {
