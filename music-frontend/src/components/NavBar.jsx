@@ -41,12 +41,12 @@ const NavBar = () => {
             </div>
 
             <div ref={dropdownRef} className="relative inline-block text-left">
-                {!isLoggedIn && <Link onClick={() => { navigate("/Login") }} className="px-1 text-gray-300 cursor-pointer font-bold">Login</Link>}
+                {!isLoggedIn && <Link to="/Login" className="px-1 text-gray-300 cursor-pointer font-bold">Login</Link>}
 
                 {/* Trigger Button */}
                 <button
-                    onClick={toggleDropdown}
-                    className="cursor-pointer bg-white text-white px-2 py-2 m-2 rounded-full hover:bg-gray-100 focus:outline-none"
+                    onClick={isLoggedIn ? toggleDropdown : null}
+                    className={`bg-white text-white px-2 py-2 m-2 rounded-full hover:bg-gray-100 focus:outline-none ${isLoggedIn ? 'cursor-pointer' : ''}`}
                 >
                     👤
                 </button>
