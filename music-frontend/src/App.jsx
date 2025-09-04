@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Song from "./pages/Song";
 import SongsList from "./pages/SongsList";
+import UsersList from "./pages/UsersList.jsx";
 
 function App() {
   return (
@@ -35,6 +36,13 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AddSong />
+                </ProtectedRoute>}
+            />
+            <Route
+              path="/Users"
+              element={
+                <ProtectedRoute>
+                  <UsersList />
                 </ProtectedRoute>}
             />
 
