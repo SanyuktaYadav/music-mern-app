@@ -73,7 +73,8 @@ const UsersList = () => {
                 {users.map((item) => (
                     <div
                         key={item._id}
-                        className="w-[45%] mx-4 my-4 border-2 rounded-2xl border-slate-500 bg-white flex justify-between p-4  flex-wrap"
+                        // className="w-[45%] mx-4 my-4 border-2 rounded-2xl border-slate-500 bg-white flex justify-between p-4  flex-wrap"
+                        className="w-[45%] mx-4 my-4 p-4 rounded-2xl border-slate-500 cursor-pointer bg-gradient-to-b from-slate-100 to-white/80 flex justify-between flex-wrap shadow-md"
                     // onClick={() => { }}
                     >
                         Name: {item.name} <br />

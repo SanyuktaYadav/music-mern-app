@@ -23,7 +23,7 @@ const PreviewSongs = () => {
             <div className="flex flex-wrap mt-8 justify-center w-full border-b-2">
                 {previewSongs.map((item) => (
                     <div
-                        className="mx-4 my-4 border-2 rounded-2xl border-slate-500 cursor-pointer bg-white flex justify-between border-2"
+                        className="mx-4 my-4 rounded-2xl border-slate-500 cursor-pointer bg-gradient-to-b from-slate-100 to-white/80 flex justify-between shadow-md"
                         onClick={() => { navigate("/Song/" + item._id); }}
                     >
                         <ListSongCard

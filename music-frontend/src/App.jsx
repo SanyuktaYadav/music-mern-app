@@ -12,7 +12,7 @@ import UsersList from "./pages/UsersList.jsx";
 function App() {
   return (
     <>
-      <div className="bg-slate-300 min-h-screen overflow-hidden">
+      <div className="bg-gradient-to-b from-slate-100 to-slate-500 min-h-screen overflow-hidden">
         <BrowserRouter>
           <NavBar />
           <Routes>
