@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import { toast } from "react-toastify";
 import { changePassword } from "../actions/userActions";
+import { decryptText } from "../utils/helpers";
 
 const initialFormFields = {
   email: "",
@@ -11,8 +12,16 @@ const initialFormFields = {
 
 const ChangePassword = () => {
   const navigate = useNavigate();
+  const { token } = useParams();
 
   const [formFields, setFormFields] = useState({ ...initialFormFields });
+
+  useEffect(() => {
+    if (token) {
+      const descryptedEmail = decodeURIComponent(decryptText(token));
+      setFormFields(prevState => ({ ...prevState, email: descryptedEmail }));
+    }
+  }, [token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,22 +51,6 @@ const ChangePassword = () => {
       <h1 className="text-3xl font-semibold mb-6 text-center">Change Password</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label htmlFor="email" className="block text-gray-900 font-medium mb-2">
-            Email <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            placeholder="Enter your email"
-            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={formFields.email}
-            onChange={handleChange}
-          />
-        </div>
-
         <div>
           <label htmlFor="password" className="block text-gray-900 font-medium mb-2">
             New Password <span className="text-red-500">*</span>

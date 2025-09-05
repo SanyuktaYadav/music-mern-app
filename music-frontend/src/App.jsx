@@ -10,6 +10,7 @@ import SongsList from "./pages/SongsList";
 import UsersList from "./pages/UsersList.jsx";
 import SongHistory from "./pages/SongHistory.jsx";
 import ChangePassword from "./pages/ChangePassword.jsx";
+import ForgotPassword from "./pages/ForgotPassword.jsx";
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
             {/* Public Routes */}
             <Route path="/Login" element={<Login />} />
             <Route path="/SignUp" element={<SignUp />} />
-            <Route path="/ChangePassword" element={<ChangePassword />} />
+            <Route path="/ForgotPassword" element={<ForgotPassword />} />
+            <Route path="/ChangePassword/:token" element={<ChangePassword />} />
             <Route path="/" element={<SongsList />} /> {/* add restriction inside for if not loggedin */}
             <Route path="/Song/:id" element={<Song />} />  {/* add restriction inside if not loggedin */}
 
