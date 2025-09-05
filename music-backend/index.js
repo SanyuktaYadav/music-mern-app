@@ -9,6 +9,7 @@ const { connectDatabase } = require("./database.js");
 const { authRouter } = require("./src/routes/auth.js");
 const { songRouter } = require("./src/routes/song.js");
 const { userRouter } = require("./src/routes/user.js");
+const { songHistoryRouter } = require("./src/routes/songHistory.js");
 
 const PORT = process.env.PORT || 3000;
 
@@ -20,6 +21,7 @@ app.use(cors({ origin: true, credentials: true }));
 app.use("/", authRouter);
 app.use("/", userRouter);
 app.use("/", songRouter);
+app.use("/", songHistoryRouter);
 
 app.get("/myMusic/test", (req, res) => {
   res.status(200).send({ message: "hello" });
