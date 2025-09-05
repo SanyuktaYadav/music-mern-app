@@ -28,6 +28,7 @@ const Song = () => {
                         from={song.albumName}
                         image={song.songPoster}
                         audioSrc={song.songAudioFile}
+                        songId={song._id}
                     />
                 )}
         </div>
