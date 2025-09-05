@@ -33,6 +33,11 @@ const AudioPlayer = ({ audioSrc }) => {
         audio.addEventListener('ended', resetToPlay); // Listen for the 'ended' event
 
         return () => {
+            // Stop audio if u go to other page, later can use different approach here
+            audio.pause();
+            audio.currentTime = 0;
+            setIsPlaying(false);
+
             audio.removeEventListener('timeupdate', updateProgress);
             audio.removeEventListener('loadedmetadata', updateDuration);
             audio.removeEventListener('ended', resetToPlay); // Cleanup the event listener
