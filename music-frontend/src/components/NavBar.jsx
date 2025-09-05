@@ -12,6 +12,8 @@ const NavBar = () => {
     const toggleDropdown = () => setIsOpen(!isOpen);
     const isLoggedIn = !!currentUser;
     const isAdmin = currentUser?.type === "admin";
+    const isListener = currentUser?.type === "listener";
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -38,6 +40,7 @@ const NavBar = () => {
                 </Link>
                 {isAdmin && <Link to="/AddSong" className="px-1 text-gray-300 cursor-pointer font-bold">Add Song</Link>}
                 {isAdmin && <Link to="/Users" className="px-1 text-gray-300 cursor-pointer font-bold">Users</Link>}
+                {isListener && <Link to="/SongHistory" className="px-1 text-gray-300 cursor-pointer font-bold">Song History</Link>}
             </div>
 
             <div ref={dropdownRef} className="relative inline-block text-left">

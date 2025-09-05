@@ -1,13 +1,20 @@
 import { faPause, faPlay, faVolumeOff } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { logSongPlay } from '../actions/songHistoryActions';
 
-const AudioPlayer = ({ audioSrc }) => {
+const AudioPlayer = ({ audioSrc, songId }) => {
+    const currentUser = useSelector(state => state.currentUser.user);
     const [isPlaying, setIsPlaying] = useState(false);
     const [volume, setVolume] = useState(1);
     const [progress, setProgress] = useState(0);
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
+    const [hasSongLogged, setHasSongLogged] = useState(false);
+
+    const isLoggedIn = !!currentUser;
+    const isListener = currentUser?.type === "listener";
 
     const audioRef = useRef(new Audio(audioSrc));
 
@@ -37,6 +44,7 @@ const AudioPlayer = ({ audioSrc }) => {
             audio.pause();
             audio.currentTime = 0;
             setIsPlaying(false);
+            setHasSongLogged(false);
 
             audio.removeEventListener('timeupdate', updateProgress);
             audio.removeEventListener('loadedmetadata', updateDuration);
@@ -50,6 +58,10 @@ const AudioPlayer = ({ audioSrc }) => {
             audio.pause();
         } else {
             audio.play();
+            if (isLoggedIn && isListener && !hasSongLogged) {
+                logSongPlay({ songId });
+                setHasSongLogged(true);
+            }
         }
         setIsPlaying(!isPlaying);
     };

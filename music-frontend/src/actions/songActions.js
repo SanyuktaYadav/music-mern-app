@@ -12,6 +12,7 @@ export const fetchPreviewSongs = async () => {
         return;
     }
 }
+
 export const fetchAllSongs = async () => {
     try {
         const response = await api.get('/myMusic/song/all');

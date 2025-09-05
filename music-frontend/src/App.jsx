@@ -8,6 +8,7 @@ import SignUp from "./pages/SignUp";
 import Song from "./pages/Song";
 import SongsList from "./pages/SongsList";
 import UsersList from "./pages/UsersList.jsx";
+import SongHistory from "./pages/SongHistory.jsx";
 
 function App() {
   return (
@@ -45,7 +46,13 @@ function App() {
                   <UsersList />
                 </ProtectedRoute>}
             />
-
+            <Route
+              path="/SongHistory"
+              element={
+                <ProtectedRoute>
+                  <SongHistory />
+                </ProtectedRoute>}
+            />
           </Routes>
         </BrowserRouter>
       </div>
