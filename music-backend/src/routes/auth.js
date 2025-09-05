@@ -61,13 +61,16 @@ authRouter.patch("/myMusic/auth/changePassword", async (req, res) => {
     const { newPassword, confirmPassword, email } = req.body;
     try {
         if (!newPassword || !confirmPassword || !email) {
-            res.status(400).send({ ERROR: "Please provide New Password and Confirm Password " });
+            res.status(400).send({ ERROR: "Please provide New Password and Confirm Password" });
         }
 
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(newPassword, salt);
 
         const user = await User.findOne({ email });
+        if(!user) {
+            return res.status(400).send({ ERROR: "Please enter correct email" });
+        }
         user.password = hash;
         await user.save();
         res.status(200).send({ message: "Password changed successfully" });
