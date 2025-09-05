@@ -70,7 +70,7 @@ authRouter.patch("/myMusic/auth/changePassword", async (req, res) => {
         const user = await User.findOne({ email });
         user.password = hash;
         await user.save();
-        res.status(200).send({ ERROR: "Password changed successfully" });
+        res.status(200).send({ message: "Password changed successfully" });
     }
     catch (err) {
         console.log("ERROR: ", err);
