@@ -43,6 +43,18 @@ export const register = async (payload) => {
     }
 }
 
+export const changePassword = async (payload) => {
+    try {
+        const response = await axios.patch(BASE_URL + '/myMusic/auth/changePassword', { ...payload },
+            { withCredentials: true });
+        if (response.status === 200) {
+            return response;
+        }
+    } catch (err) {
+        toast.error(err.response?.data?.ERROR || "Something went wrong");
+    }
+}
+
 export const fetchAllUsers = async (payload) => {
     try {
         const response = await api.post('/myMusic/users/all', { ...payload });

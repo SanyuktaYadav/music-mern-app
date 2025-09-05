@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router";
-import { storeCurrentUserDetails } from "../redux/slices/currentUserDetailsSlice";
-import { login } from "../actions/userActions";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import { changePassword } from "../actions/userActions";
 
 const initialFormFields = {
   email: "",
-  password: ""
+  newPassword: "",
+  confirmPassword: ""
 };
 
-const Login = () => {
+const ChangePassword = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [formFields, setFormFields] = useState({ ...initialFormFields });
 
@@ -25,17 +24,22 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formFields.newPassword !== formFields.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
     const payload = formFields;
-    const response = await login(payload);
-    if (response.status === 200) {
-      dispatch(storeCurrentUserDetails({ user: response.data.user }));
-      navigate("/");
+    const response = await changePassword(payload);
+    if (response) {
+      toast.success(response.data.message);
+      navigate("/Login");
     }
   };
 
   return (
     <div className="mt-20 max-w-md mx-auto p-10 shadow-md bg-white rounded-md">
-      <h1 className="text-3xl font-semibold mb-6 text-center">Login</h1>
+      <h1 className="text-3xl font-semibold mb-6 text-center">Change Password</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
@@ -56,16 +60,32 @@ const Login = () => {
 
         <div>
           <label htmlFor="password" className="block text-gray-900 font-medium mb-2">
-            Password <span className="text-red-500">*</span>
+            New Password <span className="text-red-500">*</span>
           </label>
           <input
-            id="password"
-            name="password"
+            id="newPassword"
+            name="newPassword"
             type="password"
             required
             placeholder="Enter your password"
             className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={formFields.password}
+            value={formFields.newPassword}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="password" className="block text-gray-900 font-medium mb-2">
+            Confirm Password <span className="text-red-500">*</span>
+          </label>
+          <input
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            required
+            placeholder="Re Enter your password"
+            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={formFields.confirmPassword}
             onChange={handleChange}
           />
         </div>
@@ -75,14 +95,12 @@ const Login = () => {
             type="submit"
             className="cursor-pointer w-25 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded"
           >
-            Login
+            Submit
           </button>
         </div>
       </form>
-      <div className="text-center pt-8"> <Link to="/ChangePassword" className="text-blue-700">Forgot Password?</Link></div>
-      <div className="text-center pt-8">New user? Please sign up <Link to="/SignUp" className="text-blue-700">here</Link></div>
     </div>
   );
 };
 
-export default Login;
+export default ChangePassword;
