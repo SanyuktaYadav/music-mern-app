@@ -27,15 +27,16 @@ songHistoryRouter.post("/myMusic/songHistory/save", userAuth, async (req, res) =
 
 songHistoryRouter.get("/myMusic/songHistory/all", userAuth, async (req, res) => {
     try {
-        const { userId } = req.body;
+        const userId = req.user._id;
+        const isAdmin = req.user.type === 'admin';
         let history;
-        if (userId) {
-            history = await SongHistory.find({ user: userId })
+        if (isAdmin) {
+            history = await SongHistory.find()
                 .populate('song')
                 .populate('user', 'name email')
                 .sort({ playedAt: -1 });
         } else {
-            history = await SongHistory.find()
+            history = await SongHistory.find({ user: userId })
                 .populate('song')
                 .populate('user', 'name email')
                 .sort({ playedAt: -1 });
