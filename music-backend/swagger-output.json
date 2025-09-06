@@ -254,6 +254,42 @@
         }
       }
     },
+    "/myMusic/song/edit": {
+      "patch": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "songId": {
+                  "example": "any"
+                },
+                "songName": {
+                  "example": "any"
+                },
+                "albumName": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/myMusic/song/delete": {
       "delete": {
         "description": "",
