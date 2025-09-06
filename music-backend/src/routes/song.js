@@ -121,6 +121,60 @@ songRouter.post("/myMusic/song/add", userAuth, songFilesUpload, async (req, res)
     }
 });
 
+songRouter.patch("/myMusic/song/edit", userAuth, songFilesUpload, async (req, res) => {
+    try {
+        const files = req.files;
+        const { songId, songName, albumName } = req.body;
+
+        if(!songId) {
+            return res.status(400).send({ message: "Please provide song to edit" });
+        }
+
+        const isSongPresent = await Song.find({ _id: songId });
+        if (!isSongPresent) {
+            return res.status(400).send({ message: "Song is not present" });
+        }
+
+        let updatedFields = {};
+
+        if (songName) updatedFields.songName = songName;
+        if (albumName) updatedFields.albumName = albumName;
+
+        // Upload new audio file if provided
+        if (files?.songAudioFile?.length > 0) {
+            const audioFilePath = files.songAudioFile[0].path;
+            const audioUpload = await cloudinary.uploader.upload(audioFilePath, {
+                resource_type: "raw",
+                folder: "MUSIC_APP_FILES/audio"
+            });
+            updatedFields.songAudioFile = audioUpload.secure_url;
+        }
+
+        if (files?.songPoster?.length > 0) {
+            const posterFilePath = files.songPoster[0].path;
+            const posterUpload = await cloudinary.uploader.upload(posterFilePath, {
+                folder: "MUSIC_APP_FILES/posters"
+            });
+            updatedFields.songPoster = posterUpload.secure_url;
+        }
+
+        const updatedSong = await Song.findByIdAndUpdate(
+            songId,
+            { $set: updatedFields },
+            { new: true }
+        );
+
+        if (!updatedSong) {
+            return res.status(400).send({ message: "Failed to update song" });
+        }
+
+        res.status(200).send({ message: "Song updated successfully", updatedFields });
+    } catch (err) {
+        console.log("ERROR: ", err);
+        res.status(400).send({ ERROR: "Some error has occured, Fill all required and valid data" });
+    }
+});
+
 songRouter.delete("/myMusic/song/delete", userAuth, async (req, res) => {
     const { songName } = req.body;
     try {
