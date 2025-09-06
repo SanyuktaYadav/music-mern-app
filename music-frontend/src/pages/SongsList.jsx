@@ -77,7 +77,7 @@ const SongsList = () => {
             {isLoggedIn && <div className="relative flex items-center w-80 mx-8">
                 <input
                     type="text"
-                    placeholder="Search user by name"
+                    placeholder="Search song by name"
                     value={searchNameInput}
                     className="w-full pr-10 pl-4 py-2 bg-white text-black rounded border border-gray-300 focus:outline-none"
                     onChange={(e) => setSearchNameInput(e.target.value)}
