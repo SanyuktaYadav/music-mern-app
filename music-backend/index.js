@@ -11,9 +11,10 @@ const { songRouter } = require("./src/routes/song.js");
 const { userRouter } = require("./src/routes/user.js");
 const { songHistoryRouter } = require("./src/routes/songHistory.js");
 
+dotenv.config();
+
 const PORT = process.env.PORT || 3000;
 
-dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ origin: true, credentials: true }));

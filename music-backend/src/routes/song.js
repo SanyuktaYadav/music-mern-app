@@ -1,12 +1,10 @@
 const express = require("express");
-const dotenv = require('dotenv');
 const songRouter = express.Router();
 const { Song } = require("../models/song.js");
 const { userAuth } = require("../middleware/auth.js");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 
-dotenv.config();
 const ClOUDINARY_CLOUD_NAME = process.env.ClOUDINARY_CLOUD_NAME;
 const ClOUDINARY_API_KEY = process.env.ClOUDINARY_API_KEY;
 const ClOUDINARY_API_SECRET = process.env.ClOUDINARY_API_SECRET;
