@@ -55,6 +55,22 @@ export const addSong = async (payload) => {
     }
 }
 
+export const editSong = async (payload) => {
+    try {
+        const response = await api.patch("/myMusic/song/edit",
+            payload,
+            { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true }
+        );
+        if (response.status === 200) {
+            return response;
+        }
+    } catch (err) {
+        console.log("ERROR:", err);
+        // toast.error(err.response?.data?.ERROR || "Something went wrong");
+        return;
+    }
+}
+
 export const deleteSong = async (songName) => {
     try {
         const response = await api.delete('/myMusic/song/delete',

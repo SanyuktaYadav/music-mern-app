@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, useNavigate, useParams } from "react-router";
-import { addSong, fetchSongById } from "../actions/songActions";
+import { addSong, editSong, fetchSongById } from "../actions/songActions";
 import { toast } from "react-toastify";
 
 const initialFormFields = {
@@ -76,7 +76,13 @@ const AddSong = () => {
         formData.append('albumName', formFields.albumName);
         if (songPoster) formData.append('songPoster', songPoster);
         if (songAudioFile) formData.append('songAudioFile', songAudioFile);
-        const response = await addSong(formData);
+        let response;
+        if (!isEdit) {
+            response = await addSong(formData);
+        } else {
+            formData.append('songId', id);
+            response = await editSong(formData);
+        }
         if (response.status === 200) {
             toast.success(response.data.message);
             navigate("/");
