@@ -13,9 +13,9 @@ export const fetchPreviewSongs = async () => {
     }
 }
 
-export const fetchAllSongs = async () => {
+export const fetchAllSongs = async (payload) => {
     try {
-        const response = await api.get('/myMusic/song/all');
+        const response = await api.post('/myMusic/song/all', { ...payload });
         if (response.status === 200) {
             return response;
         }

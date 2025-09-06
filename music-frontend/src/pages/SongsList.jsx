@@ -1,4 +1,4 @@
-import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faSearch, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,16 +20,25 @@ const SongsList = () => {
 
     const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
     const [selectedSong, setSelectedSong] = useState();
+    const [searchNameInput, setSearchNameInput] = useState("");
 
+    // Initial data load, and data load when no search name
     useEffect(() => {
-        const fetchSongs = async () => {
-            if (isLoggedIn) {
-                const response = await fetchAllSongs();
-                dispatch(storeSongList(response?.data?.songs ?? []));
-            }
+        if (!searchNameInput) {
+            fetchData();
         }
-        fetchSongs();
-    }, [isLoggedIn]);
+    }, [searchNameInput]);
+
+    const onApplyFilter = async () => {
+        await fetchData();
+    }
+
+    const fetchData = async () => {
+        if (isLoggedIn) {
+            const response = await fetchAllSongs({ songName: searchNameInput });
+            dispatch(storeSongList(response?.data?.songs ?? []));
+        }
+    }
 
     const handleOpenConfirmationModal = (e, songData) => {
         e.stopPropagation();
@@ -64,6 +73,30 @@ const SongsList = () => {
                     </div>
                 </div>
             </div>
+
+            {isLoggedIn && <div className="relative flex items-center w-80 mx-8">
+                <input
+                    type="text"
+                    placeholder="Search user by name"
+                    value={searchNameInput}
+                    className="w-full pr-10 pl-4 py-2 bg-white text-black rounded border border-gray-300 focus:outline-none"
+                    onChange={(e) => setSearchNameInput(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            onApplyFilter();
+                        }
+                    }}
+                />
+                <FontAwesomeIcon
+                    icon={faSearch}
+                    className="absolute right-3 text-black cursor-pointer"
+                    onClick={() => {
+                        onApplyFilter();
+                    }}
+                />
+            </div>
+            }
 
             {!isLoggedIn ?
                 <PreviewSongs /> :
