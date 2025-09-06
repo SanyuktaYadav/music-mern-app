@@ -37,7 +37,11 @@ authRouter.post("/myMusic/auth/login", async (req, res) => {
         const token = user.getjwt();
         res.cookie("token", token, {
             expires: new Date(Date.now() + 8 * 3600000),
-        })
+            httpOnly: true,     // prevents client-side JS access (good for security)
+            secure: true,       // cookie only sent over HTTPS
+            sameSite: 'None',   // allows cross-site cookies (necessary if frontend/backend on different domains)
+            path: '/'           // cookie valid for entire site 
+        });
         res.status(200).send({
             message: "Logged in successfully",
             user: { name: user.name, email: user.email, _id: user._id, type: user.type }
@@ -50,7 +54,13 @@ authRouter.post("/myMusic/auth/login", async (req, res) => {
 
 authRouter.post("/myMusic/auth/logout", async (req, res) => {
     try {
-        res.cookie("token", null, { expiresIn: new Date(Date.now()) });
+        res.cookie("token", null, {
+            expires: new Date(Date.now()),
+            httpOnly: true,
+            secure: true,
+            sameSite: 'None',
+            path: '/'
+        });
         res.status(200).send({ message: "Logged out successfully" });
     } catch (err) {
         console.log("ERROR: ", err)
@@ -68,7 +78,7 @@ authRouter.patch("/myMusic/auth/changePassword", async (req, res) => {
         const hash = await bcrypt.hash(newPassword, salt);
 
         const user = await User.findOne({ email });
-        if(!user) {
+        if (!user) {
             return res.status(400).send({ ERROR: "Please enter correct email" });
         }
         user.password = hash;
