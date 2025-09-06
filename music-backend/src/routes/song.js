@@ -36,9 +36,18 @@ const songFilesUpload = upload.fields([
     { name: "songAudioFile", maxCount: 1 }
 ]);
 
-songRouter.get("/myMusic/song/all", userAuth, async (req, res) => {
+songRouter.post("/myMusic/song/all", userAuth, async (req, res) => {
     try {
-        const songs = await Song.find();
+        const { songName } = req.body;
+        let songs;
+        if (songName) {
+            const search = songName.trim().toLowerCase();
+            songs = await Song.find({
+                songName: { $regex: search, $options: 'i' } // 'i' = case-insensitive
+            });
+        } else {
+            songs = await Song.find();
+        }
         res.status(200).send({ message: "Songs fetched successfully", songs, totalCount: songs.length });
     } catch (err) {
         console.log("ERROR: ", err);
