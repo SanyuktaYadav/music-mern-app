@@ -5,7 +5,7 @@ const doc = {
         title: 'Music MERN App',
         description: 'Swagger documentation for APIs',
     },
-    host: 'fluffy-space-cod-pwgxwq5gq4vc7w7p-3000.app.github.dev',
+    host: process.env.SWAGGER_HOST,
     schemes: ['https'],
 };
 

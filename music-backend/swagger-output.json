@@ -5,7 +5,6 @@
     "description": "Swagger documentation for APIs",
     "version": "1.0.0"
   },
-  "host": "fluffy-space-cod-pwgxwq5gq4vc7w7p-3000.app.github.dev",
   "basePath": "/",
   "schemes": [
     "https"
