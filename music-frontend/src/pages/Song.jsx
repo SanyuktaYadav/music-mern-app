@@ -20,7 +20,7 @@ const Song = () => {
     }, [id]);
 
     return (
-        <div className="flex justify-center items-center w-full h-screen">
+        <div className="flex justify-center items-center w-full h-[80vh]">
             {song &&
                 (
                     <MainSongCard

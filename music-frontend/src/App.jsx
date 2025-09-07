@@ -21,54 +21,56 @@ const SongHistory = lazy(() => import('./pages/SongHistory'));
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <NavBar />
-        <Suspense fallback={<div>Loading page...</div>}>
-          <main className="bg-gradient-to-b from-slate-100 to-slate-500 min-h-screen overflow-hidden">
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/Login" element={<Login />} />
-              <Route path="/SignUp" element={<SignUp />} />
-              <Route path="/ForgotPassword" element={<ForgotPassword />} />
-              <Route path="/ChangePassword/:token" element={<ChangePassword />} />
-              <Route path="/" element={<SongsList />} /> {/* add restriction inside for if not loggedin */}
-              <Route path="/Song/:id" element={<Song />} />  {/* add restriction inside if not loggedin */}
+      <div className="flex flex-col min-h-screen">
+        <BrowserRouter>
+          <NavBar />
+          <Suspense fallback={<div>Loading page...</div>}>
+            <main className="flex-1 bg-gradient-to-b from-slate-100 to-slate-500 overflow-hidden">
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/Login" element={<Login />} />
+                <Route path="/SignUp" element={<SignUp />} />
+                <Route path="/ForgotPassword" element={<ForgotPassword />} />
+                <Route path="/ChangePassword/:token" element={<ChangePassword />} />
+                <Route path="/" element={<SongsList />} /> {/* add restriction inside for if not loggedin */}
+                <Route path="/Song/:id" element={<Song />} />  {/* add restriction inside if not loggedin */}
 
-              {/* Protected Routes */}
+                {/* Protected Routes */}
 
-              <Route
-                path="/AddSong"
-                element={
-                  <ProtectedRoute>
-                    <AddSong />
-                  </ProtectedRoute>
-                } />
-              <Route
-                path="/EditSong/:id"
-                element={
-                  <ProtectedRoute>
-                    <AddSong />
-                  </ProtectedRoute>}
-              />
-              <Route
-                path="/Users"
-                element={
-                  <ProtectedRoute>
-                    <UsersList />
-                  </ProtectedRoute>}
-              />
-              <Route
-                path="/SongHistory"
-                element={
-                  <ProtectedRoute>
-                    <SongHistory />
-                  </ProtectedRoute>}
-              />
-            </Routes>
-          </main>
-        </Suspense>
-        <Footer />
-      </BrowserRouter>
+                <Route
+                  path="/AddSong"
+                  element={
+                    <ProtectedRoute>
+                      <AddSong />
+                    </ProtectedRoute>
+                  } />
+                <Route
+                  path="/EditSong/:id"
+                  element={
+                    <ProtectedRoute>
+                      <AddSong />
+                    </ProtectedRoute>}
+                />
+                <Route
+                  path="/Users"
+                  element={
+                    <ProtectedRoute>
+                      <UsersList />
+                    </ProtectedRoute>}
+                />
+                <Route
+                  path="/SongHistory"
+                  element={
+                    <ProtectedRoute>
+                      <SongHistory />
+                    </ProtectedRoute>}
+                />
+              </Routes>
+            </main>
+          </Suspense>
+          <Footer />
+        </BrowserRouter>
+      </div>
       <ToastContainer />
     </>
   )
