@@ -14,8 +14,8 @@ const ListSongCard = ({ title, from, image }) => {
                     {title}
                 </div>
                 {from && (
-                    <div className="text-gray-400 mt-1">
-                        – From {from}
+                     <div className="text-gray-600 mt-1 text-sm">
+                        From {from}
                     </div>
                 )}
             </div>

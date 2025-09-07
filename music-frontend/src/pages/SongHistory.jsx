@@ -52,7 +52,7 @@ const SongHistory = () => {
                             <div className="my-2 flex flex-1 justify-between items-center">
                                 {song &&
                                     (<div className="flex flex-col">
-                                        <div className="text-xl font-semibold text-slate-600">
+                                        <div className="text-xl font-semibold text-slate-600 text-base">
                                             {song.songName}
                                         </div>
                                         From: {song.albumName}

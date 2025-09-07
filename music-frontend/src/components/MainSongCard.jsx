@@ -11,8 +11,8 @@ const MainSongCard = ({ title, from, image, audioSrc, songId }) => {
                 <div className="text-xl font-semibold text-slate-600">
                     {title}
                 </div>
-                {from && <div className="text-gray-400 mt-1">
-                    - From {from}
+                {from && <div className="text-gray-600 mt-1 text-sm">
+                    From {from}
                 </div>}
                 {audioSrc &&
                     <AudioPlayer audioSrc={audioSrc} songId={songId} />
