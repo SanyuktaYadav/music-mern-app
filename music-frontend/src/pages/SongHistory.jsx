@@ -25,7 +25,6 @@ const SongHistory = () => {
         return moment(dateString).format('MMM DD, YYYY, hh:mm A');
     };
 
-
     return (
         <div className="max-w-5xl mx-auto">
             <div className='mt-18 mb-4 w-full' >
@@ -37,26 +36,42 @@ const SongHistory = () => {
             </div>
 
             <div className="flex flex-wrap mt-8 justify-center w-full">
-                {songHistory.map((item) => (
-                    <div
-                        key={item._id}
-                        className="w-full mx-20 my-4 p-4 rounded-2xl border-slate-500 cursor-pointer bg-gradient-to-b from-slate-100 to-white/80 flex justify-start flex-wrap shadow-md"
-                        onClick={() => { navigate("/Song/" + item.song._id) }}
-                    >
-                        <img src={item.song.songPoster} alt="song" className="w-24 h-24 object-cover mx-12" />
-                        <div className="my-2 flex flex-1 justify-between items-center">
-                            <div>
-                                <span className="text-xl font-semibold text-slate-600">
-                                    {item.song.songName}
-                                </span><br />
-                                Album Name: {item.song.albumName} <br />
-                            </div>
-                            <div className="mx-8">
-                                 {formatDate(item.playedAt)}
+                {songHistory.map((item) => {
+                    const song = item?.song;
+
+                    return (
+                        <div
+                            key={item._id}
+                            className={`w-full mx-20 my-4 p-4 rounded-2xl border-slate-500 ${song ? 'cursor-pointer' : ''} bg-gradient-to-b from-slate-100 to-white/80 flex justify-start flex-wrap shadow-md`}
+                            onClick={() => { song ? navigate("/Song/" + item.song._id) : null }}
+                        >
+                            {song &&
+                                <img src={song.songPoster} alt="song" className="w-24 h-24 object-cover mx-12" />
+                            }
+
+                            <div className="my-2 flex flex-1 justify-between items-center">
+                                {song &&
+                                    (<div>
+                                        <span className="text-xl font-semibold text-slate-600">
+                                            {song.songName}
+                                        </span><br />
+                                        Album Name: {song.albumName} <br />
+                                    </div>)
+                                }
+                                {!song &&
+                                    (<div>
+                                        <span className="mx-12 text-xl font-semibold text-slate-600">
+                                            {item.songName + " Song Deleted"}
+                                        </span>
+                                    </div>)
+                                }
+                                <div className="mx-8">
+                                    {formatDate(item?.playedAt)}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    )
+                })}
             </div>
         </div>
 
