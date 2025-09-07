@@ -4,6 +4,7 @@ const { Song } = require("../models/song.js");
 const { userAuth } = require("../middleware/auth.js");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
+const fs = require('fs');
 
 const ClOUDINARY_CLOUD_NAME = process.env.ClOUDINARY_CLOUD_NAME;
 const ClOUDINARY_API_KEY = process.env.ClOUDINARY_API_KEY;
@@ -15,11 +16,17 @@ cloudinary.config({
     api_secret: ClOUDINARY_API_SECRET,
 });
 
+const uploadDir = './public/uploads';
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 // const storage = multer.memoryStorage();
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './public/uploads')
+        cb(null, uploadDir)
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
