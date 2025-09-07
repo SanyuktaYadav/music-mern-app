@@ -51,21 +51,21 @@ const SongHistory = () => {
 
                             <div className="my-2 flex flex-1 justify-between items-center">
                                 {song &&
-                                    (<div>
-                                        <span className="text-xl font-semibold text-slate-600">
+                                    (<div className="flex flex-col">
+                                        <div className="text-xl font-semibold text-slate-600">
                                             {song.songName}
-                                        </span><br />
-                                        Album Name: {song.albumName} <br />
+                                        </div>
+                                        From: {song.albumName}
                                     </div>)
                                 }
                                 {!song &&
                                     (<div>
-                                        <span className="mx-12 text-xl font-semibold text-slate-600">
-                                            {item.songName + " Song Deleted"}
-                                        </span>
+                                        <div className="mx-12 text-xl font-semibold text-slate-600">
+                                            {item.songName + " song deleted"}
+                                        </div>
                                     </div>)
                                 }
-                                <div className="mx-8">
+                                <div>
                                     {formatDate(item?.playedAt)}
                                 </div>
                             </div>
