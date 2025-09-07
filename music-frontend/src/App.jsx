@@ -11,13 +11,14 @@ import UsersList from "./pages/UsersList.jsx";
 import SongHistory from "./pages/SongHistory.jsx";
 import ChangePassword from "./pages/ChangePassword.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
+import Footer from "./components/Footer.jsx";
 
 function App() {
   return (
     <>
-      <div className="bg-gradient-to-b from-slate-100 to-slate-500 min-h-screen overflow-hidden">
-        <BrowserRouter>
-          <NavBar />
+      <BrowserRouter>
+        <NavBar />
+        <main className="bg-gradient-to-b from-slate-100 to-slate-500 min-h-screen overflow-hidden">
           <Routes>
             {/* Public Routes */}
             <Route path="/Login" element={<Login />} />
@@ -58,8 +59,9 @@ function App() {
                 </ProtectedRoute>}
             />
           </Routes>
-        </BrowserRouter>
-      </div>
+        </main>
+        <Footer />
+      </BrowserRouter>
       <ToastContainer />
     </>
   )
