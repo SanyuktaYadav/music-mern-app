@@ -6,6 +6,10 @@ const songHistorySchema = new mongoose.Schema({
         ref: 'Song',
         required: true,
     },
+    songName: {
+        type: String, // keep a snapshot of the song name
+        required: true,
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

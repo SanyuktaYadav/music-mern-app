@@ -14,6 +14,7 @@ songHistoryRouter.post("/myMusic/songHistory/save", userAuth, async (req, res) =
         const userId = req.user._id;
         const newHistory = new SongHistory({
             song: songId,
+            songName: song.songName,
             user: userId,
             playedAt: new Date(),
         });
