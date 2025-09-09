@@ -2,10 +2,10 @@ import AudioPlayer from "./AudioPlayer";
 
 const MainSongCard = ({ title, from, image, audioSrc, songId }) => {
     return (
-        <div className="text-center my-8 mx-4 flex flex-col md:flex-row gap-8 items-center">
-            {image && <div className="w-80 h-80 border-amber-50 border">
-                <img src={image} alt="" className="w-full h-full object-cover" />
-            </div>}
+        <div className="text-center flex flex-col md:flex-row gap-8 items-center mt-30">
+            {image &&
+                <img src={image} alt={title} className="w-80 h-80 border-amber-50 border object-cover mx-2" />
+            }
 
             <div>
                 <div className="text-xl font-semibold text-slate-600">

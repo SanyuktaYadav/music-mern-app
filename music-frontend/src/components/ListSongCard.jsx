@@ -1,6 +1,6 @@
 const ListSongCard = ({ title, from, image }) => {
     return (
-        <div className="my-8 mx-4 p-4 flex gap-4 items-center rounded-md w-80 overflow-hidden">
+        <div className="p-4 flex gap-4 items-center rounded-md w-80 overflow-hidden">
             {/* Image */}
             {image && (
                 <div className="w-20 h-20 flex-shrink-0 rounded-md overflow-hidden">

@@ -8,6 +8,7 @@ import PreviewSongs from '../components/PreviewSongs';
 import ListSongCard from "../components/ListSongCard.jsx";
 import { storeSongList } from '../redux/slices/songListSlice.js';
 import { fetchAllSongs } from '../actions/songActions.js';
+import Spinner from '../components/Spinner.jsx';
 
 const SongsList = () => {
     const currentUser = useSelector(state => state.currentUser.user);
@@ -21,6 +22,7 @@ const SongsList = () => {
     const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
     const [selectedSong, setSelectedSong] = useState();
     const [searchNameInput, setSearchNameInput] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     // Initial data load, and data load when no search name
     useEffect(() => {
@@ -35,8 +37,12 @@ const SongsList = () => {
 
     const fetchData = async () => {
         if (isLoggedIn) {
+            setIsLoading(true);
             const response = await fetchAllSongs({ songName: searchNameInput });
-            dispatch(storeSongList(response?.data?.songs ?? []));
+            if (response) {
+                dispatch(storeSongList(response?.data?.songs ?? []));
+            }
+            setIsLoading(false);
         }
     }
 
@@ -100,33 +106,35 @@ const SongsList = () => {
 
             {!isLoggedIn ?
                 <PreviewSongs /> :
-                <div className="flex flex-wrap mt-8 justify-center w-full">
-                    {songs.map((item) => (
-                        <div
-                            key={item._id}
-                            className="mx-4 my-4 rounded-2xl border-slate-500 cursor-pointer bg-gradient-to-b from-slate-100 to-white/80 flex justify-between shadow-md"
-                            onClick={() => { navigate("/Song/" + item._id); }}
-                        >
-                            <ListSongCard
-                                title={item.songName}
-                                from={item.albumName}
-                                image={item.songPoster}
-                            />
-                            {isAdmin &&
-                                <div className="text-lg mt-2 mr-2 self-start">
-                                    <FontAwesomeIcon icon={faPen}
-                                        onClick={(e) => handleEditSong(e, item._id)}
-                                    />
-                                    <FontAwesomeIcon icon={faTrash}
-                                        onClick={(e) => handleOpenConfirmationModal(e, { songName: item.songName, _id: item._id })}
-                                    />
-                                </div>
-                            }
-                        </div>
-                    ))}
-                </div>}
+                isLoading
+                    ? <Spinner />
+                    : <div className="flex flex-wrap mt-8 justify-center gap-6">
+                        {songs.map((item) => (
+                            <div
+                                key={item._id}
+                                className="rounded-2xl border-slate-500 cursor-pointer bg-gradient-to-b from-slate-100 to-white/80 flex justify-between shadow-md"
+                                onClick={() => { navigate("/Song/" + item._id); }}
+                            >
+                                <ListSongCard
+                                    title={item.songName}
+                                    from={item.albumName}
+                                    image={item.songPoster}
+                                />
+                                {isAdmin &&
+                                    <div className="text-lg mt-2 mr-2 self-start">
+                                        <FontAwesomeIcon icon={faPen}
+                                            onClick={(e) => handleEditSong(e, item._id)}
+                                        />
+                                        <FontAwesomeIcon icon={faTrash}
+                                            onClick={(e) => handleOpenConfirmationModal(e, { songName: item.songName, _id: item._id })}
+                                        />
+                                    </div>
+                                }
+                            </div>
+                        ))}
+                    </div>
+            }
         </div>
-
     )
 }
 

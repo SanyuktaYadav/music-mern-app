@@ -5,6 +5,7 @@ import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 import { lazy, Suspense } from 'react';
+import Spinner from "./components/Spinner.jsx";
 const Login = lazy(() => import('./pages/Login'));
 const SignUp = lazy(() => import('./pages/SignUp'));
 const ChangePassword = lazy(() => import('./pages/ChangePassword'));
@@ -23,9 +24,9 @@ function App() {
     <>
       <div className="flex flex-col min-h-screen">
         <BrowserRouter>
-          <NavBar />
-          <Suspense fallback={<div>Loading page...</div>}>
-            <main className="flex-1 bg-gradient-to-b from-slate-100 to-slate-500 overflow-hidden">
+          <Suspense fallback={<Spinner marginTopClass="mt-60"/>}>
+            <NavBar />
+            <main className="flex-1 bg-gradient-to-b from-slate-100 to-slate-500 overflow-hidden pb-4">
               <Routes>
                 {/* Public Routes */}
                 <Route path="/Login" element={<Login />} />
@@ -67,8 +68,8 @@ function App() {
                 />
               </Routes>
             </main>
+            <Footer />
           </Suspense>
-          <Footer />
         </BrowserRouter>
       </div>
       <ToastContainer />
