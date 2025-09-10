@@ -18,6 +18,7 @@ const SongsList = () => {
     const dispatch = useDispatch();
     const isLoggedIn = !!currentUser;
     const isAdmin = currentUser?.type === "admin";
+    const isListener = currentUser?.type === "listener";
 
     const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
     const [selectedSong, setSelectedSong] = useState();
@@ -112,7 +113,7 @@ const SongsList = () => {
                         {songs.map((item) => (
                             <div
                                 key={item._id}
-                                className="rounded-2xl border-slate-500 cursor-pointer bg-gradient-to-b from-slate-100 to-white/80 flex justify-between shadow-md"
+                                className={`rounded-2xl border-slate-500 cursor-pointer bg-gradient-to-b from-slate-100 to-white/80 flex justify-between shadow-md ${isListener ? "px-4" : ""}`}
                                 onClick={() => { navigate("/Song/" + item._id); }}
                             >
                                 <ListSongCard
