@@ -1,9 +1,5 @@
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const { Test } = require("./testModel.js");
-
-dotenv.config();
-const MongoDB_URI = process.env.MongoDB_URI;
 
 const connectDatabase = async () => {
 
@@ -20,7 +16,7 @@ const connectDatabase = async () => {
     //     console.error("❌ Connection failed:", err);
     // }
 
-    mongoose.connect(MongoDB_URI)
+    mongoose.connect( process.env.MongoDB_URI)
         .then(async () => {
             console.log('✅ Connected to MongoDB Atlas');
             // Insert a sample document
