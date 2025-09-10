@@ -47,6 +47,10 @@ app.get("/myMusic/test", (req, res) => {
   res.status(200).send({ message: "hello" });
 });
 
+app.get("/myMusic/ready", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 
