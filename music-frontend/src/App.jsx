@@ -25,9 +25,9 @@ function App() {
       <div className="flex flex-col min-h-screen">
         <BrowserRouter>
           <Suspense fallback={<Spinner marginTopClass="mt-60" />}>
-            <NoticeStrip />
             <NavBar />
             <main className="flex-1 bg-gradient-to-b from-slate-100 to-slate-500 overflow-hidden pb-4">
+              <NoticeStrip />
               <Routes>
                 {/* Public Routes */}
                 <Route path="/Login" element={<Login />} />
