@@ -1,10 +1,10 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from "react-router";
 import { ToastContainer } from 'react-toastify';
 import Footer from "./components/Footer.jsx";
 import NavBar from "./components/NavBar";
+import NoticeStrip from "./components/NoticeStrip.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
-
-import { lazy, Suspense } from 'react';
 import Spinner from "./components/Spinner.jsx";
 const Login = lazy(() => import('./pages/Login'));
 const SignUp = lazy(() => import('./pages/SignUp'));
@@ -24,7 +24,8 @@ function App() {
     <>
       <div className="flex flex-col min-h-screen">
         <BrowserRouter>
-          <Suspense fallback={<Spinner marginTopClass="mt-60"/>}>
+          <Suspense fallback={<Spinner marginTopClass="mt-60" />}>
+            <NoticeStrip />
             <NavBar />
             <main className="flex-1 bg-gradient-to-b from-slate-100 to-slate-500 overflow-hidden pb-4">
               <Routes>
