@@ -1,17 +1,37 @@
 import { useEffect, useState } from "react";
-import { fetchReady } from "../actions/readyAction";
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
 
 const NoticeStrip = () => {
-    const [visible, setVisible] = useState(true);
+    const [visible, setVisible] = useState(false);
 
     useEffect(() => {
+        let didRespond = false;
+
         const fetch = async () => {
-            const response = await fetchReady();
-            if (response.status === 200) {
-                setVisible(false);
+            try {
+                const response = await axios.get(BASE_URL + "/myMusic/ready");
+                if (response?.status === 200) {
+                    didRespond = true;
+                    setVisible(false);
+                }
+            } catch (error) {
+                console.error("API Error:", error);
+                setVisible(true);
             }
-        }
+        };
+
         fetch();
+
+        // Show notice if API doesn't respond in 3s
+        const timeout = setTimeout(() => {
+            if (!didRespond) {
+                setVisible(true);
+            }
+        }, 3000);
+
+        // Cleanup timeout on unmount
+        return () => clearTimeout(timeout);
     }, []);
 
     if (!visible) return null;
@@ -34,6 +54,6 @@ const NoticeStrip = () => {
             </button>
         </div>
     );
-}
+};
 
 export default NoticeStrip;
