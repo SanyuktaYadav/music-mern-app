@@ -1,6 +1,7 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const express = require("express");
 const app = express();
-const dotenv = require('dotenv');
 const cookieParser = require("cookie-parser");
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
@@ -16,8 +17,6 @@ const allowedOrigins = [
   'https://sy-music-frontend.onrender.com',  // Replace with your real frontend URL on Render or elsewhere
   'https://fluffy-space-cod-pwgxwq5gq4vc7w7p-5173.app.github.dev'
 ];
-
-dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 
