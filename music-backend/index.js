@@ -15,6 +15,7 @@ const { songHistoryRouter } = require("./src/routes/songHistory.js");
 const allowedOrigins = [
   'http://localhost:5173',
   'https://sy-music-frontend.onrender.com',  // Replace with your real frontend URL on Render or elsewhere
+  'https://music-backend-wy5e.onrender.com', // node deployment link for swagger allowing
   'https://fluffy-space-cod-pwgxwq5gq4vc7w7p-5173.app.github.dev'
 ];
 
