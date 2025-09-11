@@ -20,6 +20,16 @@
         }
       }
     },
+    "/myMusic/ready": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/myMusic/auth/register": {
       "post": {
         "description": "",
